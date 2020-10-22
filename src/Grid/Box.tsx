@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import styled from '@emotion/styled';
 
-import {Cell} from '../Cell';
+import {Cell} from './Cell';
 import {Indices} from '../globals';
 
 const Container = styled.div(
