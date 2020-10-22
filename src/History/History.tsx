@@ -15,14 +15,13 @@ const Container = styled.div({
   display: 'flex',
   flexDirection: 'column',
   whiteSpace: 'nowrap',
-  overflow: 'hidden',
 });
 
 const Scroll = styled.div({
   display: 'flex',
   flexDirection: 'column',
   overflow: 'scroll',
-  height: `21em`, // Number of Records to show
+  height: `22em`, // Number of Records to show
   paddingTop: `3px`, // accounts for Setting's toggle extra paddings
 });
 

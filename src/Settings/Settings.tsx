@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {ReactNode} from 'react';
 import * as FluentUi from '@fluentui/react';
 import {RecoilState, useRecoilState} from 'recoil';
 
@@ -6,19 +6,20 @@ import styled from '@emotion/styled';
 
 import {SectionHeading, Divider} from '../ui';
 
-import {canSeeHistoryState, isAidOnState} from './recoil';
+import {canSeeHistoryState, isAidOnState, canOverscrollState} from './recoil';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {actions, State} from '../state';
 import {FontFamily} from '../globals';
 
-const Container = styled.div({});
+const Container = styled.div({
+  overflow: 'visible', // Empty styled divs make it hidden
+});
 
 const ToggleContainer = styled.div({
   display: 'flex',
   flexDirection: 'column',
   whiteSpace: 'nowrap',
-  overflow: 'hidden',
   paddingLeft: '2px', // accounts for FluentUi's focus ring
 });
 
@@ -53,7 +54,7 @@ const RecoilControl = ({
 };
 
 // Givens are described as disabled in the store
-const GivensControl = () => {
+const GivensControl = ({label}: {label: string}) => {
   const dispatch = useDispatch();
 
   const isDisabled = useSelector<State, boolean>(
@@ -62,12 +63,16 @@ const GivensControl = () => {
 
   const handleDisable = () => dispatch(actions.toggleDisabled());
 
+  return <Toggle label={label} onChange={handleDisable} checked={isDisabled} />;
+};
+
+const Group = ({heading, children}: {heading: string; children: ReactNode}) => {
+  // TODO: should probs relate the headings and the toggles, tf is your a11y training
   return (
-    <Toggle
-      label="Absolutely Protect Givens"
-      onChange={handleDisable}
-      checked={isDisabled}
-    />
+    <>
+      <SectionHeading>{heading}</SectionHeading>
+      <ToggleContainer>{children}</ToggleContainer>
+    </>
   );
 };
 
@@ -76,12 +81,17 @@ export const Settings = () => {
     <>
       <Divider />
       <Container>
-        <SectionHeading>AI</SectionHeading>
-        <ToggleContainer>
-          <RecoilControl state={canSeeHistoryState} label="Affect History" />
+        <Group heading="AI">
           <RecoilControl state={isAidOnState} label="Row + Column ML Assist" />
-          <GivensControl />
-        </ToggleContainer>
+        </Group>
+        <Group heading="Vex">
+          <RecoilControl state={canSeeHistoryState} label="Disturb History" />
+          <GivensControl label="Absolutely Protect Givens" />
+          <RecoilControl
+            state={canOverscrollState}
+            label="Censor Finger Gestures"
+          />
+        </Group>
       </Container>
     </>
   );

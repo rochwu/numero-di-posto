@@ -65,12 +65,32 @@ const getChanges = ({selected, state, key, fill}: Record & {state: State}) => {
   );
 };
 
-const reduceHistory = ({present, state}: {present: number; state: State}) => ({
+const reduceHistory = ({
+  present,
+  state,
+}: {
+  present: State['present'];
+  state: State;
+}) => ({
   ...state,
   present,
   pencils: state.history[present].pencils,
   values: state.history[present].values,
 });
+
+const resetHistory = (state: State): Pick<State, 'history' | 'present'> => {
+  const {record: _, ...history} = state.history[state.present];
+
+  return {
+    history: [
+      {
+        ...history,
+        record: initialRecord, // TODO: ponder whether I should spread or ref
+      },
+    ],
+    present: 0,
+  };
+};
 
 export const {reducer, actions} = createSlice({
   name: 'sudoku',
@@ -130,18 +150,10 @@ export const {reducer, actions} = createSlice({
           }
         }
 
-        const {record: _, ...history} = state.history[state.present];
-
         return {
           ...state,
+          ...resetHistory(state),
           disabled,
-          history: [
-            {
-              ...history,
-              record: initialRecord,
-            },
-          ],
-          present: 0,
         };
       } else {
         return {
@@ -168,7 +180,7 @@ export const {reducer, actions} = createSlice({
 
       return reduceHistory({present, state});
     },
-    historyJump: (state, {payload: present}) => {
+    timeTravel: (state, {payload: present}) => {
       return reduceHistory({present, state});
     },
     select: (

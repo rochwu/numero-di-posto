@@ -11,8 +11,6 @@ const Subject = styled.span({
 });
 
 const Container = styled.div({
-  fontSize: `1em`,
-  lineHeight: `1em`,
   cursor: 'pointer',
   ':hover': {
     backgroundColor: Colors.Selected,
@@ -60,7 +58,7 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
   }, []); // Only 1 record is born with isSelected, the rest gain it by click
 
   const onClick = () => {
-    dispatch(actions.historyJump(index));
+    dispatch(actions.timeTravel(index));
     ref.current?.scrollIntoView({behavior: 'smooth', block: 'center'});
   };
 

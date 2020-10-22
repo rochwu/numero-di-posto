@@ -1,6 +1,7 @@
-import * as React from 'react';
+import React, {useCallback, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
-import {useResetRecoilState} from 'recoil';
+import {useRecoilValue, useResetRecoilState} from 'recoil';
+import {canOverscrollState} from '../Settings/recoil';
 
 import {actions, lastSelectedState} from '../state';
 
@@ -12,19 +13,28 @@ export const System = () => {
   useKeyDownEffect();
 
   const resetLastSelected = useResetRecoilState(lastSelectedState);
+  const canOverscroll = useRecoilValue(canOverscrollState);
 
-  const onBlur = () => {
+  const onBlur = useCallback(() => {
     dispatch(actions.clearSelected());
     resetLastSelected();
-  };
+  }, [resetLastSelected, dispatch]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('blur', onBlur);
 
     return () => {
       window.removeEventListener('blur', onBlur);
     };
-  }, []);
+  }, [onBlur]);
+
+  useEffect(() => {
+    if (canOverscroll) {
+      document.body.style.overscrollBehavior = 'none';
+    } else {
+      document.body.style.overscrollBehavior = 'auto';
+    }
+  }, [canOverscroll]);
 
   return <>{null}</>;
 };

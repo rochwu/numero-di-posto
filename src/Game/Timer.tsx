@@ -13,7 +13,7 @@ const zeroPad = (n: number) => {
   return n < 10 ? `0${n}` : `${n}`;
 };
 
-const getTime = ({
+const getTimer = ({
   seconds,
   minutes,
   hours,
@@ -54,18 +54,15 @@ const reducer = (state: number, {type}: {type: string}) => {
 };
 
 export const Timer = () => {
-  const [time, dispatch] = useReducer(reducer, 0);
+  const [time, dispatchTime] = useReducer(reducer, 0);
 
   const onClick = () => {
-    dispatch({type: types.clear});
+    dispatchTime({type: types.clear});
   };
 
   useEffect(() => {
     start = Date.now();
-
-    setInterval(() => {
-      dispatch({type: types.add});
-    }, 250);
+    setInterval(() => dispatchTime({type: types.add}), 250);
   }, []);
 
   const seconds = time % 60;
@@ -76,7 +73,7 @@ export const Timer = () => {
 
   return (
     <Container onClick={onClick}>
-      {getTime({minutes, seconds, hours})}
+      {getTimer({minutes, seconds, hours})}
     </Container>
   );
 };

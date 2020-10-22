@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import {flags} from '../globals';
 
-import {Box} from '../Box';
+import {Box} from './Box';
 
 const Container = styled.div({
   display: 'grid',
