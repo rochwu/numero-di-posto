@@ -43,27 +43,24 @@ const useValueEffect = (id: string, value: string) => {
   const setColumn = useSetRecoilState(columnSelector(id));
   const setBlock = useSetRecoilState(blockSelector(id));
 
-  const setValue = (value: string) => {
-    setRow(value);
-    setColumn(value);
-    setBlock(value);
-  };
+  const setValue = React.useCallback(
+    (value: string) => {
+      setRow(value);
+      setColumn(value);
+      setBlock(value);
+    },
+    [setRow, setColumn, setBlock],
+  );
 
   // TODO: find a way to prevent this
   React.useEffect(() => {
     setValue(value);
-
-    return () => {
-      setValue('');
-    };
-  }, [value]);
+    return () => setValue('');
+  }, [value, setValue]);
 };
 
 export const Pen = ({identifier: id, value}: Props) => {
   const isDisabled = useSelector(selectIsDisabled(id));
-
-  // Figure out whether I like redux more
-  // const isValid = useSelector<State, boolean>(state => validate({state, id}));
 
   const isValid = useIsValid(id);
   useValueEffect(id, value);

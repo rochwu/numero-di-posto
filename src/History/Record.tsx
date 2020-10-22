@@ -57,7 +57,7 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
     /* eslint-disable react-hooks/exhaustive-deps */
   }, []); // Only 1 record is born with isSelected, the rest gain it by click
 
-  const onClick = () => {
+  const handleClick = () => {
     dispatch(actions.timeTravel(index));
     ref.current?.scrollIntoView({behavior: 'smooth', block: 'center'});
   };
@@ -93,7 +93,7 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
   }
 
   return (
-    <Container ref={ref} id={getElementId(index)} onClick={onClick}>
+    <Container ref={ref} id={getElementId(index)} onClick={handleClick}>
       {isSelected ? <Selected>{content}</Selected> : content}
     </Container>
   );

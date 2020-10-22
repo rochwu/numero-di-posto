@@ -15,18 +15,18 @@ export const System = () => {
   const resetLastSelected = useResetRecoilState(lastSelectedState);
   const canOverscroll = useRecoilValue(canOverscrollState);
 
-  const onBlur = useCallback(() => {
+  const handleBlur = useCallback(() => {
     dispatch(actions.clearSelected());
     resetLastSelected();
   }, [resetLastSelected, dispatch]);
 
   useEffect(() => {
-    window.addEventListener('blur', onBlur);
+    window.addEventListener('blur', handleBlur);
 
     return () => {
-      window.removeEventListener('blur', onBlur);
+      window.removeEventListener('blur', handleBlur);
     };
-  }, [onBlur]);
+  }, [handleBlur]);
 
   useEffect(() => {
     if (canOverscroll) {

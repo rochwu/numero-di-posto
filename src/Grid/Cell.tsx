@@ -42,13 +42,13 @@ export const Cell = ({row, column}: Indices) => {
   const isSelected = useSelector(selectIsSelected(id));
   const isFirstSelected = useSelector(selectIsFirstSelected(id));
 
-  const onMouseEnter = () => {
+  const handleMouseEnter = () => {
     if (flags.isSelecting) {
       dispatch(actions.select({id, isSelected: true}));
     }
   };
 
-  const onMouseDown: React.MouseEventHandler = ({metaKey, shiftKey}) => {
+  const handleMouseDown: React.MouseEventHandler = ({metaKey, shiftKey}) => {
     setLastSelected(id);
 
     if (!metaKey) {
@@ -67,8 +67,8 @@ export const Cell = ({row, column}: Indices) => {
     <Container
       row={row}
       column={column}
-      onMouseEnter={onMouseEnter}
-      onMouseDown={onMouseDown}
+      onMouseEnter={handleMouseEnter}
+      onMouseDown={handleMouseDown}
       isFirstSelected={isFirstSelected}
       isSelected={isSelected}
     >

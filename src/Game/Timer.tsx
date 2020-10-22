@@ -1,4 +1,4 @@
-import React, {useEffect, useReducer} from 'react';
+import React, {useCallback, useEffect, useReducer, useRef} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -31,21 +31,18 @@ const getTimer = ({
   }
 };
 
-let start = 0; // Didn't want this to modify render
-
 const types = {
   add: 'add',
   clear: 'clear',
 };
 
-// Used to minimize renders on state diff
+let start = 0; // Used to minimize renders on state diff
 const reducer = (state: number, {type}: {type: string}) => {
   switch (type) {
     case types.add: {
       return ~~((Date.now() - start) / 1000);
     }
     case types.clear: {
-      start = Date.now();
       return 0;
     }
     default:
@@ -54,17 +51,37 @@ const reducer = (state: number, {type}: {type: string}) => {
 };
 
 export const Timer = () => {
-  const [time, dispatchTime] = useReducer(reducer, 0);
+  const [ellapsed, changeEllapsed] = useReducer(reducer, 0);
+  const intervalId = useRef(0);
+  const saved = useRef(0);
 
-  const onClick = () => {
-    dispatchTime({type: types.clear});
-  };
-
-  useEffect(() => {
+  const pace = useCallback(() => {
     start = Date.now();
-    setInterval(() => dispatchTime({type: types.add}), 250);
+    intervalId.current = setInterval(
+      () => changeEllapsed({type: types.add}),
+      250,
+    );
   }, []);
 
+  // TODO: use this
+  const pause = () => {
+    saved.current = saved.current + ellapsed;
+    changeEllapsed({type: types.clear});
+    clearInterval(intervalId.current);
+  };
+
+  const reset = useCallback(() => {
+    saved.current = 0;
+    clearInterval(intervalId.current);
+    pace();
+  }, [pace]);
+
+  useEffect(() => {
+    pace();
+    return () => clearInterval(intervalId.current);
+  }, [pace]);
+
+  const time = ellapsed + saved.current;
   const seconds = time % 60;
   const rawMinutes = ~~(time / 60); // bitwise NOT is used to truncate
   const minutes = rawMinutes % 60;
@@ -72,8 +89,6 @@ export const Timer = () => {
   const hours = rawHours % 60;
 
   return (
-    <Container onClick={onClick}>
-      {getTimer({minutes, seconds, hours})}
-    </Container>
+    <Container onClick={reset}>{getTimer({minutes, seconds, hours})}</Container>
   );
 };
