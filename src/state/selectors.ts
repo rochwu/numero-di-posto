@@ -15,4 +15,6 @@ export const selectIsSelected = (id: Identifier) => ({selected}: State) =>
 export const selectIsFirstSelected = (id: Identifier) => ({selected}: State) =>
   selected.length > 1 ? selected[0] === id : false;
 
-export const isFilled = ({filled}: State) => filled === 81;
+export const selectIsFilled = ({filled}: State) => filled === 81;
+
+export const selectHasValues = ({filled}: State) => filled > 0;

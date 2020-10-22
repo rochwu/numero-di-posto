@@ -9,7 +9,7 @@ import {SectionHeading, Divider} from '../ui';
 import {canSeeHistoryState, isAidOnState, canOverscrollState} from './recoil';
 
 import {useDispatch, useSelector} from 'react-redux';
-import {actions, State} from '../state';
+import {actions, selectHasValues, State} from '../state';
 import {FontFamily} from '../globals';
 
 const Container = styled.div({
@@ -61,7 +61,7 @@ const GivensControl = ({label}: {label: string}) => {
     ({disabled}) => !!Object.keys(disabled).length,
   );
 
-  const hasValues = useSelector<State, boolean>(({filled}) => filled > 0);
+  const hasValues = useSelector(selectHasValues);
 
   const handleDisable = () => dispatch(actions.toggleDisabled());
 
