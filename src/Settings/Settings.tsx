@@ -61,9 +61,18 @@ const GivensControl = ({label}: {label: string}) => {
     ({disabled}) => !!Object.keys(disabled).length,
   );
 
+  const hasValues = useSelector<State, boolean>(({filled}) => filled > 0);
+
   const handleDisable = () => dispatch(actions.toggleDisabled());
 
-  return <Toggle label={label} onChange={handleDisable} checked={isDisabled} />;
+  return (
+    <Toggle
+      label={label}
+      disabled={!hasValues}
+      onChange={handleDisable}
+      checked={isDisabled}
+    />
+  );
 };
 
 const Group = ({heading, children}: {heading: string; children: ReactNode}) => {
