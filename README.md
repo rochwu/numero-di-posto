@@ -1,2 +1,2 @@
-# numero-di-posto
+# Pseudoku
 Created with CodeSandbox

@@ -1,0 +1,41 @@
+{
+  "name": "sudoku",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.tsx",
+  "dependencies": {
+    "@emotion/core": "10.0.35",
+    "@emotion/styled": "10.0.27",
+    "@fluentui/react": "7.147.1",
+    "@reduxjs/toolkit": "1.4.0",
+    "@types/react": "16.9.53",
+    "@types/react-redux": "7.1.9",
+    "@types/react-transition-group": "4.4.0",
+    "react": "16.14.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "7.2.1",
+    "react-scripts": "3.3.0",
+    "react-transition-group": "4.4.1",
+    "recoil": "0.0.13",
+    "redux": "4.0.5",
+    "redux-devtools-extension": "2.13.8"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.19",
+    "@types/react-dom": "16.9.5",
+    "typescript": "3.7.5"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
