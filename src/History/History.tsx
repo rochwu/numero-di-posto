@@ -22,7 +22,8 @@ const Scroll = styled.div({
   display: 'flex',
   flexDirection: 'column',
   overflow: 'scroll',
-  height: `526px`, // TODO: this is so hacky
+  height: `21em`, // Number of Records to show
+  paddingTop: `3px`, // accounts for Setting's toggle extra paddings
 });
 
 const Timeline = () => {

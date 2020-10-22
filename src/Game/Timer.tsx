@@ -6,6 +6,7 @@ const Container = styled.span({
   display: 'flex',
   justifyContent: 'flex-end',
   cursor: 'pointer',
+  fontSize: `1.1em`,
 });
 
 const zeroPad = (n: number) => {

@@ -10,20 +10,21 @@ const Subject = styled.span({
   color: Colors.Fill,
 });
 
-const Container = styled.span(
-  {
-    fontFamily: `Consolas,monospace`,
-    cursor: 'pointer',
-    ':hover': {
-      backgroundColor: Colors.Selected,
-    },
-    paddingLeft: `0.5em`,
-    paddingRight: `0.5em`,
+const Container = styled.div({
+  fontSize: `1em`,
+  lineHeight: `1em`,
+  cursor: 'pointer',
+  ':hover': {
+    backgroundColor: Colors.Selected,
   },
-  ({isSelected}: {isSelected: boolean}) => ({
-    border: isSelected ? '1px solid black' : undefined,
-  }),
-);
+  paddingLeft: `0.5em`,
+  paddingRight: `0.5em`,
+});
+
+const Selected = styled.div({
+  fontWeight: 'bold',
+  transform: `scale(1.1)`,
+});
 
 const createAction = (fill: Fill) => {
   switch (fill) {
@@ -49,7 +50,7 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
     ({present}) => present === index,
   );
 
-  const ref = React.useRef<HTMLSpanElement>(null);
+  const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     if (isSelected) {
@@ -78,29 +79,24 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
 
     if (fill === Fill.Delete) {
       content = (
-        <>
+        <span>
           <Subject>removed</Subject> {affects}
-        </>
+        </span>
       );
     } else {
       const action = createAction(fill);
 
       content = (
-        <>
+        <span>
           {action} <Subject>{key}</Subject> {affects}
-        </>
+        </span>
       );
     }
   }
 
   return (
-    <Container
-      ref={ref}
-      id={getElementId(index)}
-      onClick={onClick}
-      isSelected={isSelected}
-    >
-      {content}
+    <Container ref={ref} id={getElementId(index)} onClick={onClick}>
+      {isSelected ? <Selected>{content}</Selected> : content}
     </Container>
   );
 };

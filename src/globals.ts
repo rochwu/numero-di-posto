@@ -21,6 +21,11 @@ export const Colors = {
   Pencil: `#757575`,
 };
 
+export const FontFamily = {
+  All: `Open Sans,Roboto,sans-serif`,
+  OG: `Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif`,
+};
+
 export enum Fill {
   Normal,
   Pencil,
