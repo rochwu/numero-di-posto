@@ -42,13 +42,21 @@ export const Cell = ({row, column}: Indices) => {
   const isSelected = useSelector(selectIsSelected(id));
   const isFirstSelected = useSelector(selectIsFirstSelected(id));
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter: React.MouseEventHandler = ({metaKey}) => {
     if (flags.isSelecting) {
-      dispatch(actions.select({id, isSelected: true}));
+      dispatch(actions.select({id, isSelected: flags.selectingFill}));
     }
   };
 
-  const handleMouseDown: React.MouseEventHandler = ({metaKey, shiftKey}) => {
+  const handleMouseDown: React.MouseEventHandler = ({metaKey}) => {
+    flags.selectingFill = !isSelected;
+
+    if (value && !flags.isSelecting && !metaKey) {
+      setLastSelected(id);
+      dispatch(actions.showPossibilities({id, value}));
+      return;
+    }
+
     setLastSelected(id);
 
     if (!metaKey) {

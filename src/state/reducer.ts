@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Fill, getId} from '../globals';
 
-import {State, Record, Identifier} from './types';
-
+import {State, Record, Identifier, Values} from './types';
 import {selectIsDisabled, selectValue} from './selectors';
+import {showPossibilities} from './showPossibilities';
 
 const initialRecord = {fill: Fill.Normal, key: '', selected: []};
 
@@ -78,13 +78,12 @@ const reduceHistory = ({
   values: state.history[present].values,
 });
 
-const resetHistory = (state: State): Pick<State, 'history' | 'present'> => {
-  const {record: _, ...history} = state.history[state.present];
-
+const resetHistory = (values: Values): Pick<State, 'history' | 'present'> => {
   return {
     history: [
       {
-        ...history,
+        values,
+        pencils: {},
         record: initialRecord, // TODO: ponder whether I should spread or ref
       },
     ],
@@ -96,6 +95,32 @@ export const {reducer, actions} = createSlice({
   name: 'sudoku',
   initialState,
   reducers: {
+    make: (state, {payload: board}: PayloadAction<string>) => {
+      const disabled: State['disabled'] = {};
+      const values: State['values'] = {};
+      let filled = 0;
+
+      for (let i = 0; i < 81; i++) {
+        const row = Math.floor(i / 9);
+        const column = i % 9;
+
+        if (board[i] !== '0') {
+          const id = getId(row, column);
+
+          values[id] = board[i];
+          disabled[id] = true;
+          ++filled;
+        }
+      }
+
+      return {
+        ...initialState,
+        ...resetHistory(values),
+        filled,
+        values,
+        disabled,
+      };
+    },
     fill: (state, {payload}: PayloadAction<Record>) => {
       const {key, fill} = payload;
 
@@ -152,7 +177,7 @@ export const {reducer, actions} = createSlice({
 
         return {
           ...state,
-          ...resetHistory(state),
+          ...resetHistory(state.history[state.present].values),
           disabled,
         };
       } else {
@@ -182,6 +207,9 @@ export const {reducer, actions} = createSlice({
     },
     timeTravel: (state, {payload: present}) => {
       return reduceHistory({present, state});
+    },
+    showPossibilities: (state, {payload: {id, value}}) => {
+      state.selected = [id].concat(showPossibilities(state, value));
     },
     select: (
       state,

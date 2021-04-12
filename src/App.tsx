@@ -6,6 +6,7 @@ import {System} from './System';
 import {Settings} from './Settings';
 import {History} from './History';
 import {Game} from './Game';
+import {Maker} from './Maker';
 import {FontFamily} from './globals';
 
 const Container = styled.div({
@@ -21,6 +22,7 @@ export default function App() {
       <Container>
         <Game />
         <History />
+        <Maker />
         <Settings />
       </Container>
     </>

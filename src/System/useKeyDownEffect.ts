@@ -67,6 +67,8 @@ export const useKeyDownEffect = () => {
       case 'ArrowUp':
       case 'ArrowLeft':
       case 'ArrowRight': {
+        event.preventDefault(); // Scroll
+
         const idFromArrow = getIdFromArrowKey({
           key,
           id: lastSelected,

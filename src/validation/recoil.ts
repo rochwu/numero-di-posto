@@ -1,5 +1,6 @@
 import {atomFamily, selectorFamily} from 'recoil';
 import {getIndices, Indices} from '../globals';
+import {autoPencilState} from '../Settings';
 
 type Values = {
   [index: number]: string; // value
@@ -117,10 +118,9 @@ export const blockState = atomFamily<Values, string>({
   default: () => ({}),
 });
 
-export const uniqueBlockSelector = selectorFamily<Set<string>, number>({
+export const uniqueBlockSelector = selectorFamily<Set<string>, string>({
   key: 'uniqueBlockSelector',
-  get: (id: number) => ({get}) =>
-    getUniqueValues(get(blockState(id.toString()))),
+  get: (id: string) => ({get}) => getUniqueValues(get(blockState(id))),
 });
 
 export const blockSelector = selectorFamily<string, string>({
@@ -151,5 +151,35 @@ export const isBlockValidSelector = selectorFamily<boolean, string>({
     const value = state[position];
 
     return isColliding(value, state);
+  },
+});
+
+export const uniqueCellSelector = selectorFamily<
+  Set<string> | undefined,
+  string
+>({
+  key: 'uniqueCellSelector',
+  get: (id: string) => ({get}) => {
+    if (!get(autoPencilState)) {
+      return;
+    }
+
+    const indices = getIndices(id);
+
+    const rowSet = get(uniqueRowSelector(indices.row));
+    const columnSet = get(uniqueColumnSelector(indices.column));
+    const blockSet = get(uniqueBlockSelector(getBlockId(indices)));
+
+    const cells = new Set<string>();
+
+    for (let i = 1; i <= 9; i++) {
+      const value = i.toString();
+
+      if (blockSet.has(value) || rowSet.has(value) || columnSet.has(value)) {
+        cells.add(value);
+      }
+    }
+
+    return cells;
   },
 });

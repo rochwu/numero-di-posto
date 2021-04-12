@@ -6,7 +6,13 @@ import styled from '@emotion/styled';
 
 import {SectionHeading, Divider} from '../ui';
 
-import {canSeeHistoryState, isAidOnState, canOverscrollState} from './recoil';
+import {
+  canSeeHistoryState,
+  isAidOnState,
+  canOverscrollState,
+  showMakerState,
+  autoPencilState,
+} from './recoil';
 
 import {useDispatch, useSelector} from 'react-redux';
 import {actions, selectHasValues, State} from '../state';
@@ -57,9 +63,9 @@ const RecoilControl = ({
 const GivensControl = ({label}: {label: string}) => {
   const dispatch = useDispatch();
 
-  const isDisabled = useSelector<State, boolean>(
-    ({disabled}) => !!Object.keys(disabled).length,
-  );
+  const isDisabled = useSelector<State, boolean>(({disabled}) => {
+    return !!Object.keys(disabled).length;
+  });
 
   const hasValues = useSelector(selectHasValues);
 
@@ -92,10 +98,17 @@ export const Settings = () => {
       <Container>
         <Group heading="AI">
           <RecoilControl state={isAidOnState} label="Row + Column ML Assist" />
+          <RecoilControl
+            state={autoPencilState}
+            label="Render All Possibilities"
+          />
         </Group>
         <Group heading="Vex">
           <RecoilControl state={canSeeHistoryState} label="Disturb History" />
+          <RecoilControl state={showMakerState} label="Propose Bang" />
           <GivensControl label="Absolutely Protect Givens" />
+        </Group>
+        <Group heading="Bond">
           <RecoilControl
             state={canOverscrollState}
             label="Censor Finger Gestures"

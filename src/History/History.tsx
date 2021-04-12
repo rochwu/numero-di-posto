@@ -9,7 +9,7 @@ import {CollapsibleWidth, SectionHeading} from '../ui';
 
 import {Divider} from '../ui';
 import {useRecoilValue} from 'recoil';
-import {canSeeHistoryState} from '../Settings/recoil';
+import {canSeeHistoryState} from '../Settings';
 
 const Container = styled.div({
   display: 'flex',
