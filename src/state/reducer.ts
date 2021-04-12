@@ -91,11 +91,13 @@ const resetHistory = (values: Values): Pick<State, 'history' | 'present'> => {
   };
 };
 
+const numericRegex = new RegExp('[1-9]');
+
 export const {reducer, actions} = createSlice({
   name: 'sudoku',
   initialState,
   reducers: {
-    make: (state, {payload: board}: PayloadAction<string>) => {
+    make: (_, {payload: board}: PayloadAction<string>) => {
       const disabled: State['disabled'] = {};
       const values: State['values'] = {};
       let filled = 0;
@@ -104,7 +106,7 @@ export const {reducer, actions} = createSlice({
         const row = Math.floor(i / 9);
         const column = i % 9;
 
-        if (board[i] !== '0') {
+        if (numericRegex.test(board[i])) {
           const id = getId(row, column);
 
           values[id] = board[i];
