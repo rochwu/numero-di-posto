@@ -44,7 +44,11 @@ export const Cell = ({row, column}: Indices) => {
 
   const handleMouseEnter: React.MouseEventHandler = ({metaKey}) => {
     if (flags.isSelecting) {
-      dispatch(actions.select({id, isSelected: flags.selectingFill}));
+      if (metaKey) {
+        dispatch(actions.select({id, isSelected: flags.selectingFill}));
+      } else {
+        dispatch(actions.select({id, isSelected: true}));
+      }
     }
   };
 
