@@ -13,7 +13,7 @@ const Container = styled.div({
   whiteSpace: 'nowrap',
 });
 
-const Content = () => {
+const StringInput = () => {
   const dispatch = useDispatch();
 
   const [disabled, setDisabled] = React.useState(true);
@@ -32,8 +32,7 @@ const Content = () => {
   };
 
   return (
-    <Container>
-      <SectionHeading>Rebuild</SectionHeading>
+    <>
       <TextField
         onChange={handleChange}
         placeholder="81 characters 0-9"
@@ -43,7 +42,7 @@ const Content = () => {
       <PrimaryButton onClick={handleClick} disabled={disabled}>
         Propose
       </PrimaryButton>
-    </Container>
+    </>
   );
 };
 
@@ -53,7 +52,10 @@ export const Maker = () => {
   return (
     <CollapsibleWidth isCollapsed={isCollapsed}>
       <Divider />
-      <Content />
+      <Container>
+        <SectionHeading>Rebuild</SectionHeading>
+        <StringInput />
+      </Container>
     </CollapsibleWidth>
   );
 };
