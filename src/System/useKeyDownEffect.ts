@@ -52,7 +52,7 @@ export const useKeyDownEffect = () => {
       case '`':
       case 'Backspace':
         dispatch(actions.fill({key: '', fill: Fill.Delete, selected}));
-        break;
+        return;
       case 'z': {
         if (metaKey) {
           if (shiftKey) {
@@ -61,7 +61,14 @@ export const useKeyDownEffect = () => {
             dispatch(actions.undo());
           }
         }
-        break;
+        return;
+      }
+      case 'a': {
+        if (metaKey) {
+          event.preventDefault(); // Highlight other text
+          dispatch(actions.selectAll());
+        }
+        return;
       }
       case 'ArrowDown':
       case 'ArrowUp':
@@ -78,7 +85,7 @@ export const useKeyDownEffect = () => {
           dispatch(actions.setSelected([idFromArrow]));
           setLastSelected(idFromArrow);
         }
-        break;
+        return;
       }
     }
   };

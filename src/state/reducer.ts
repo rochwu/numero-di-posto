@@ -213,6 +213,20 @@ export const {reducer, actions} = createSlice({
     showPossibilities: (state, {payload: {id, value}}) => {
       state.selected = [id].concat(showPossibilities(state, value));
     },
+    selectAll: state => {
+      const selected = [];
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          const id = getId(i, j);
+
+          if (!state.values[id]) {
+            selected.push(id);
+          }
+        }
+      }
+
+      state.selected = selected;
+    },
     select: (
       state,
       {
