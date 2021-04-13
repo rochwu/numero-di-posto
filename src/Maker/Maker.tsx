@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import {ITextFieldProps, PrimaryButton, TextField} from '@fluentui/react';
 import * as React from 'react';
 import {useDispatch} from 'react-redux';
-import {useRecoilValue} from 'recoil';
+import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {showMakerState} from '../Settings';
 import {actions} from '../state';
 import {CollapsibleWidth, Divider, SectionHeading} from '../ui';
@@ -15,6 +15,8 @@ const Container = styled.div({
 
 const StringInput = () => {
   const dispatch = useDispatch();
+
+  const show = useSetRecoilState(showMakerState);
 
   const [disabled, setDisabled] = React.useState(true);
   const value = React.useRef('');
@@ -29,6 +31,7 @@ const StringInput = () => {
 
   const handleClick = () => {
     dispatch(actions.make(value.current));
+    show(false);
   };
 
   return (

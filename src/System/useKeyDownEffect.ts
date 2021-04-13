@@ -53,6 +53,15 @@ export const useKeyDownEffect = () => {
       case 'Backspace':
         dispatch(actions.fill({key: '', fill: Fill.Delete, selected}));
         return;
+      case 'Enter':
+      case 'Spacebar':
+      case ' ': {
+        if (selected.length === 1) {
+          dispatch(actions.showPossibilities());
+        }
+
+        return;
+      }
       case 'z': {
         if (metaKey) {
           if (shiftKey) {

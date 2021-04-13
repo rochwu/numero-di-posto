@@ -210,16 +210,27 @@ export const {reducer, actions} = createSlice({
     timeTravel: (state, {payload: present}) => {
       return reduceHistory({present, state});
     },
-    showPossibilities: (state, {payload: {id, value}}) => {
-      state.selected = [id].concat(showPossibilities(state, value));
+    showPossibilities: (
+      state,
+      {payload}: PayloadAction<{id: string; value: string} | undefined>,
+    ) => {
+      if (payload) {
+        const {id, value} = payload;
+        state.selected = [id].concat(showPossibilities(state, value));
+      } else {
+        state.selected = state.selected.concat(
+          showPossibilities(state, state.values[state.selected[0]]),
+        );
+      }
     },
     selectAll: state => {
       const selected = [];
+
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           const id = getId(i, j);
 
-          if (!state.values[id]) {
+          if (!state.values[id] || state.filled === 81) {
             selected.push(id);
           }
         }

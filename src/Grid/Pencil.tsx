@@ -6,7 +6,7 @@ import {Identifier, Pencil as PencilState, selectPencil} from '../state';
 import {Colors, Indices, Size} from '../globals';
 import {useSelector} from 'react-redux';
 import {useRecoilValue} from 'recoil';
-import {uniqueCellSelector} from '../validation';
+import {tryUniqueCellSelector} from '../validation';
 
 type Props = {
   identifier: Identifier;
@@ -29,7 +29,7 @@ const Grid = styled.div(
 
 export const Pencil = ({identifier: id}: Props) => {
   const manualPencil = useSelector(selectPencil(id));
-  const uniqueValues = useRecoilValue(uniqueCellSelector(id));
+  const uniqueValues = useRecoilValue(tryUniqueCellSelector(id));
 
   const autoPencil: PencilState = {};
   if (uniqueValues) {

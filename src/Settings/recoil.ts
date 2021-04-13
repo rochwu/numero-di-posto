@@ -1,6 +1,7 @@
 import {atom} from 'recoil';
 
-export const isAidOnState = atom({
+// Game Assist
+export const columRowAidState = atom({
   key: 'isAidOnState',
   default: true,
 });
@@ -10,17 +11,24 @@ export const autoPencilState = atom({
   default: false,
 });
 
-export const canSeeHistoryState = atom({
-  key: 'canSeeHistoryState',
-  default: false,
+export const autoSelectPossibleState = atom({
+  key: 'autoSelectPossibleState',
+  default: true,
 });
 
-export const canOverscrollState = atom({
-  key: `canOverscrollState`,
-  default: window.history.length > 1,
+// Convenience + Game Config
+export const showHistoryState = atom({
+  key: 'showHistoryState',
+  default: false,
 });
 
 export const showMakerState = atom({
   key: 'showMakerState',
   default: false,
+});
+
+// UI Overrides
+export const canOverscrollState = atom({
+  key: `canOverscrollState`,
+  default: window.history.length > 1,
 });

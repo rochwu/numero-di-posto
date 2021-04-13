@@ -9,7 +9,7 @@ import {CollapsibleWidth, SectionHeading} from '../ui';
 
 import {Divider} from '../ui';
 import {useRecoilValue} from 'recoil';
-import {canSeeHistoryState} from '../Settings';
+import {showHistoryState} from '../Settings';
 
 const Container = styled.div({
   display: 'flex',
@@ -41,7 +41,7 @@ const Timeline = () => {
 };
 
 export const History = () => {
-  const canSeeHistory = useRecoilValue(canSeeHistoryState);
+  const canSeeHistory = useRecoilValue(showHistoryState);
 
   return (
     <CollapsibleWidth isCollapsed={canSeeHistory}>

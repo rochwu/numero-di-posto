@@ -1,27 +1,46 @@
 import React, {useCallback, useEffect, useReducer, useRef} from 'react';
 
 import styled from '@emotion/styled';
+import {useSelector} from 'react-redux';
+import {selectIsFilled} from '../state';
 
-const Container = styled.span({
+const Container = styled.div({
   display: 'flex',
   justifyContent: 'flex-end',
-  cursor: 'pointer',
   fontSize: `1.1em`,
+});
+
+const PlayTime = styled.span({
+  cursor: 'pointer',
+});
+
+const CompletedTime = styled.span({
+  marginRight: `1em`,
 });
 
 const zeroPad = (n: number) => {
   return n < 10 ? `0${n}` : `${n}`;
 };
 
-const getTimer = ({
-  seconds,
-  minutes,
-  hours,
-}: {
-  seconds: number;
-  minutes: number;
-  hours: number;
-}) => {
+const getTime = (ms: number) => {
+  const seconds = ms % 60;
+
+  const rawMinutes = ~~(ms / 60); // bitwise NOT is used to truncate
+  const minutes = rawMinutes % 60;
+
+  const rawHours = ~~(rawMinutes / 60);
+  const hours = rawHours % 60;
+
+  return {
+    seconds,
+    minutes,
+    hours,
+  };
+};
+
+const getTimer = (ms: number) => {
+  const {seconds, minutes, hours} = getTime(ms);
+
   if (hours) {
     return `${hours}:${zeroPad(minutes)}:${zeroPad(seconds)}`;
   } else if (minutes) {
@@ -51,9 +70,12 @@ const reducer = (state: number, {type}: {type: string}) => {
 };
 
 export const Timer = () => {
+  const completed = useSelector(selectIsFilled);
+
   const [ellapsed, changeEllapsed] = useReducer(reducer, 0);
   const intervalId = useRef(0);
   const saved = useRef(0);
+  const completedTime = useRef(0);
 
   const pace = useCallback(() => {
     start = Date.now();
@@ -82,13 +104,21 @@ export const Timer = () => {
   }, [pace]);
 
   const time = ellapsed + saved.current;
-  const seconds = time % 60;
-  const rawMinutes = ~~(time / 60); // bitwise NOT is used to truncate
-  const minutes = rawMinutes % 60;
-  const rawHours = ~~(rawMinutes / 60);
-  const hours = rawHours % 60;
+
+  useEffect(() => {
+    if (completed) {
+      completedTime.current = time;
+    } else {
+      completedTime.current = 0;
+    }
+  }, [completed]);
 
   return (
-    <Container onClick={reset}>{getTimer({minutes, seconds, hours})}</Container>
+    <Container>
+      {completedTime.current ? (
+        <CompletedTime>{getTimer(completedTime.current)}</CompletedTime>
+      ) : null}
+      <PlayTime onClick={reset}>{getTimer(time)}</PlayTime>
+    </Container>
   );
 };

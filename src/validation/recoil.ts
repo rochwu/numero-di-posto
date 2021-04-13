@@ -154,11 +154,11 @@ export const isBlockValidSelector = selectorFamily<boolean, string>({
   },
 });
 
-export const uniqueCellSelector = selectorFamily<
+export const tryUniqueCellSelector = selectorFamily<
   Set<string> | undefined,
   string
 >({
-  key: 'uniqueCellSelector',
+  key: 'tryUniqueCellSelector',
   get: (id: string) => ({get}) => {
     if (!get(autoPencilState)) {
       return;

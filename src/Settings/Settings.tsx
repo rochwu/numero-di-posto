@@ -7,11 +7,12 @@ import styled from '@emotion/styled';
 import {SectionHeading, Divider} from '../ui';
 
 import {
-  canSeeHistoryState,
-  isAidOnState,
+  showHistoryState,
+  columRowAidState,
   canOverscrollState,
   showMakerState,
   autoPencilState,
+  autoSelectPossibleState,
 } from './recoil';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -97,15 +98,28 @@ export const Settings = () => {
       <Divider />
       <Container>
         <Group heading="AI">
-          <RecoilControl state={isAidOnState} label="Row + Column ML Assist" />
+          <RecoilControl
+            state={columRowAidState}
+            label="Two Dimensional Assist"
+          />
           <RecoilControl
             state={autoPencilState}
-            label="Render All Possibilities"
+            label="Render Every Possibility"
+          />
+          <RecoilControl
+            state={autoSelectPossibleState}
+            label="Optic Neural Networks"
           />
         </Group>
         <Group heading="Vex">
-          <RecoilControl state={canSeeHistoryState} label="Disturb History" />
-          <RecoilControl state={showMakerState} label="Propose Bang" />
+          <RecoilControl
+            state={showHistoryState}
+            label="Disturb History Violently"
+          />
+          <RecoilControl
+            state={showMakerState}
+            label="Bond with New World Tree"
+          />
           <GivensControl label="Absolutely Protect Givens" />
         </Group>
         <Group heading="Bond">

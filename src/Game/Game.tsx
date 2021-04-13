@@ -3,7 +3,7 @@ import {useRecoilValue} from 'recoil';
 import styled from '@emotion/styled';
 
 import {Grid} from '../Grid';
-import {isAidOnState} from '../Settings/recoil';
+import {columRowAidState} from '../Settings/recoil';
 
 import {RowsAid} from './RowsAid';
 import {ColumnsAid} from './ColumnsAid';
@@ -40,7 +40,7 @@ const TimerContainer = styled.div({
 });
 
 const Aid = () => {
-  const isAidOn = useRecoilValue(isAidOnState);
+  const isAidOn = useRecoilValue(columRowAidState);
 
   if (isAidOn) {
     return (
