@@ -2,11 +2,17 @@ import * as React from 'react';
 
 import styled from '@emotion/styled';
 
-import {Identifier, Pencil as PencilState, selectPencil} from '../state';
+import {
+  actions,
+  Identifier,
+  Pencil as PencilState,
+  selectPencil,
+} from '../state';
 import {Colors, Indices, Size} from '../globals';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilValue} from 'recoil';
 import {tryUniqueCellSelector} from '../validation';
+import {autoSelectPossibleState} from '../Settings';
 
 type Props = {
   identifier: Identifier;
@@ -31,16 +37,27 @@ export const Pencil = ({identifier: id}: Props) => {
   const manualPencil = useSelector(selectPencil(id));
   const uniqueValues = useRecoilValue(tryUniqueCellSelector(id));
 
+  const dispatch = useDispatch();
+  const doAutoFill = useRecoilValue(autoSelectPossibleState);
+
   const autoPencil: PencilState = {};
+  const possible: string[] = [];
   if (uniqueValues) {
     for (let i = 1; i <= 9; i++) {
       const value = i.toString();
 
       if (!uniqueValues.has(value)) {
         autoPencil[value] = true;
+        possible.push(value);
       }
     }
   }
+
+  React.useEffect(() => {
+    if (doAutoFill && possible.length === 1) {
+      dispatch(actions.autofill({id, value: possible[0]}));
+    }
+  }, [doAutoFill, possible]);
 
   const pencil = uniqueValues ? autoPencil : manualPencil;
 

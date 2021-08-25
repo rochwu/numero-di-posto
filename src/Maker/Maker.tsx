@@ -1,17 +1,18 @@
 import styled from '@emotion/styled';
 import {ITextFieldProps, PrimaryButton, TextField} from '@fluentui/react';
 import * as React from 'react';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 import {showMakerState} from '../Settings';
-import {actions} from '../state';
+import {actions, State} from '../state';
 import {
   CollapsibleWidth,
   Divider,
   SectionHeading,
   SubsectionHeading,
 } from '../ui';
-import {tuplesToGrid} from '../generator';
+import {tuplesToGrid, transform} from '../generator';
+import {getId} from '../globals';
 
 const Container = styled.div({
   display: 'flex',
@@ -80,6 +81,41 @@ const Presets = () => {
   );
 };
 
+const Transform = () => {
+  const dispatch = useDispatch();
+
+  const state = useSelector((state: State) => state);
+
+  const handleClick = () => {
+    const {disabled, values} = state;
+
+    let grid = '';
+
+    for (let x = 0; x < 9; x++) {
+      for (let y = 0; y < 9; y++) {
+        const id = getId(x, y);
+
+        if (disabled[id]) {
+          grid += values[id];
+        } else {
+          grid += '0';
+        }
+      }
+    }
+
+    dispatch(actions.make(transform(grid)));
+  };
+
+  return (
+    <>
+      <SubsectionHeading>Facade</SubsectionHeading>
+      <PrimaryButton onClick={handleClick} style={{margin: '1px 0'}}>
+        Wonk
+      </PrimaryButton>
+    </>
+  );
+};
+
 export const Maker = () => {
   const isCollapsed = useRecoilValue(showMakerState);
 
@@ -89,6 +125,7 @@ export const Maker = () => {
       <Container>
         <StringInput />
         <Presets />
+        <Transform />
       </Container>
     </CollapsibleWidth>
   );

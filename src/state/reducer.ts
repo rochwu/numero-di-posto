@@ -123,6 +123,34 @@ export const {reducer, actions} = createSlice({
         disabled,
       };
     },
+    // TODO: Merge logic with fill and autofill
+    autofill: (
+      state,
+      {payload}: PayloadAction<{id: Identifier; value: string}>,
+    ) => {
+      const {id, value} = payload;
+
+      const present = state.present + 1;
+      const {pencils} = state;
+      const record = {fill: Fill.Auto, key: value, selected: [id]};
+
+      const values = {
+        ...state.values,
+        [id]: value,
+      };
+
+      return {
+        ...state,
+        history: [
+          ...state.history.slice(0, present),
+          {pencils, values, record},
+        ],
+        present,
+        pencils,
+        values,
+        filled: state.filled + 1,
+      };
+    },
     fill: (state, {payload}: PayloadAction<Record>) => {
       const {key, fill} = payload;
 
@@ -167,9 +195,9 @@ export const {reducer, actions} = createSlice({
       if (!Object.keys(state.disabled).length) {
         const disabled: State['disabled'] = {};
 
-        for (let i = 0; i < 9; i++) {
-          for (let j = 0; j < 9; j++) {
-            const id = getId(i, j);
+        for (let x = 0; x < 9; x++) {
+          for (let y = 0; y < 9; y++) {
+            const id = getId(x, y);
 
             if (state.values[id]) {
               disabled[id] = true;

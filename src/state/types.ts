@@ -37,7 +37,7 @@ export type Pencil = {
   [number: string]: boolean | undefined; // 1-9
 };
 
-// How we store "givens", we disable them for interaction
+// How we store "givens", we disable them from interaction
 export type Disabled = {
   [identifier in Identifier]: boolean | undefined;
 };
