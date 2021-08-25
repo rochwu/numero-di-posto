@@ -11,6 +11,7 @@ export const autoPencilState = atom({
   default: false,
 });
 
+// TODO: Not implemented, probs auto select last remaining digit
 export const autoSelectPossibleState = atom({
   key: 'autoSelectPossibleState',
   default: true,
