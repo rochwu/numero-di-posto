@@ -29,7 +29,7 @@ const createAction = (fill: Fill) => {
     case Fill.Pencil:
       return 'marked';
     case Fill.Auto:
-      return 'autofilled';
+      return `auto'ed`;
     default:
       return 'inked';
   }

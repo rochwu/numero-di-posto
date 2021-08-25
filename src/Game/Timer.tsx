@@ -70,6 +70,7 @@ const reducer = (state: number, {type}: {type: string}) => {
 };
 
 export const Timer = () => {
+  // TODO: Autofill doesn't complete
   const completed = useSelector(selectIsFilled);
 
   const [ellapsed, changeEllapsed] = useReducer(reducer, 0);

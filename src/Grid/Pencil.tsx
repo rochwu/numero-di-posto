@@ -41,23 +41,25 @@ export const Pencil = ({identifier: id}: Props) => {
   const doAutoFill = useRecoilValue(autoSelectPossibleState);
 
   const autoPencil: PencilState = {};
-  const possible: string[] = [];
+  let remainingValue = '';
+
   if (uniqueValues) {
     for (let i = 1; i <= 9; i++) {
       const value = i.toString();
 
       if (!uniqueValues.has(value)) {
         autoPencil[value] = true;
-        possible.push(value);
+        remainingValue = value;
       }
     }
   }
 
   React.useEffect(() => {
-    if (doAutoFill && possible.length === 1) {
-      dispatch(actions.autofill({id, value: possible[0]}));
+    if (doAutoFill && uniqueValues?.size === 8) {
+      dispatch(actions.autofill({id, value: remainingValue}));
     }
-  }, [doAutoFill, possible]);
+    /* eslint-disable react-hooks/exhaustive-deps */
+  }, [doAutoFill, uniqueValues]);
 
   const pencil = uniqueValues ? autoPencil : manualPencil;
 

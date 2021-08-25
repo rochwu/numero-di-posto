@@ -108,7 +108,7 @@ export const Settings = () => {
           />
           <RecoilControl
             state={autoSelectPossibleState}
-            label="Optic Neural Networks"
+            label="Optical Neural Networks"
           />
         </Group>
         <Group heading="Vex">

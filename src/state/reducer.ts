@@ -71,12 +71,31 @@ const reduceHistory = ({
 }: {
   present: State['present'];
   state: State;
-}) => ({
-  ...state,
-  present,
-  pencils: state.history[present].pencils,
-  values: state.history[present].values,
-});
+}) => {
+  const {values, pencils} = state.history[present];
+
+  return {
+    ...state,
+    present,
+    pencils,
+    values,
+    filled: Object.keys(values).filter(key => values[key]).length,
+  };
+};
+
+const findLastInput = (state: State): State['present'] => {
+  const {history, present} = state;
+
+  if (history[present].record.fill !== Fill.Auto) {
+    return Math.max(present - 1, 0);
+  }
+
+  let it = present - 1;
+  // Want what is before last input, so extra decrement at the end
+  while (history[it--].record.fill === Fill.Auto) {}
+
+  return Math.max(it, 0);
+};
 
 const resetHistory = (values: Values): Pick<State, 'history' | 'present'> => {
   return {
@@ -123,14 +142,10 @@ export const {reducer, actions} = createSlice({
         disabled,
       };
     },
-    // TODO: Merge logic with fill and autofill
     autofill: (
       state,
-      {payload}: PayloadAction<{id: Identifier; value: string}>,
+      {payload: {id, value}}: PayloadAction<{id: Identifier; value: string}>,
     ) => {
-      const {id, value} = payload;
-
-      const present = state.present + 1;
       const {pencils} = state;
       const record = {fill: Fill.Auto, key: value, selected: [id]};
 
@@ -138,6 +153,9 @@ export const {reducer, actions} = createSlice({
         ...state.values,
         [id]: value,
       };
+
+      const present = state.present + 1;
+      const filled = state.filled + 1;
 
       return {
         ...state,
@@ -148,7 +166,7 @@ export const {reducer, actions} = createSlice({
         present,
         pencils,
         values,
-        filled: state.filled + 1,
+        filled,
       };
     },
     fill: (state, {payload}: PayloadAction<Record>) => {
@@ -222,9 +240,10 @@ export const {reducer, actions} = createSlice({
         return state;
       }
 
-      const present = state.present - 1;
-
-      return reduceHistory({present, state});
+      return reduceHistory({
+        present: findLastInput(state),
+        state,
+      });
     },
     redo: state => {
       const present = state.present + 1;
