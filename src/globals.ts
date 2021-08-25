@@ -31,6 +31,7 @@ export enum Fill {
   Normal,
   Pencil,
   Delete,
+  Auto,
 }
 
 export type Indices = {
@@ -64,4 +65,10 @@ export const transformId = (id: string, indices: Indices) => {
   } else {
     return '';
   }
+};
+
+export const getRandomNumber = (max: number, min: number = 0) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min);
 };
