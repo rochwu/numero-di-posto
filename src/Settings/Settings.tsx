@@ -104,7 +104,7 @@ export const Settings = () => {
           />
           <RecoilControl
             state={autoPencilState}
-            label="Render Every Possibility"
+            label="Distribute Every Possibility"
           />
           <RecoilControl
             state={autoSelectPossibleState}
@@ -118,7 +118,7 @@ export const Settings = () => {
           />
           <RecoilControl
             state={showMakerState}
-            label="Bond with New World Tree"
+            label="Expunge Present and Revise"
           />
           <GivensControl label="Absolutely Protect Givens" />
         </Group>

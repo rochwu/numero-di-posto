@@ -1,6 +1,6 @@
 import {atom} from 'recoil';
 
-// Game Assist
+// Show possible values for each column + row
 export const columRowAidState = atom({
   key: 'isAidOnState',
   default: true,
