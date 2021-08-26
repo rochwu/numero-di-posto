@@ -1,8 +1,10 @@
+import {useRef, useState} from 'react';
+
 import styled from '@emotion/styled';
 import {ITextFieldProps, PrimaryButton, TextField} from '@fluentui/react';
-import * as React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
+
 import {showMakerState} from '../Settings';
 import {actions, State} from '../state';
 import {
@@ -25,8 +27,8 @@ const StringInput = () => {
 
   const show = useSetRecoilState(showMakerState);
 
-  const [disabled, setDisabled] = React.useState(true);
-  const value = React.useRef('');
+  const [disabled, setDisabled] = useState(true);
+  const value = useRef('');
 
   const handleChange: ITextFieldProps['onChange'] = (_, newValue = '') => {
     const isValid = newValue?.length === 81;

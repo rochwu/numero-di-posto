@@ -1,10 +1,9 @@
-import * as React from 'react';
-
 import styled from '@emotion/styled';
 
 import {actions, Record as RecordState, State} from '../state';
 import {Colors, Fill, getIndices} from '../globals';
 import {useDispatch, useSelector} from 'react-redux';
+import {useEffect, useRef} from 'react';
 
 const Subject = styled.span({
   color: Colors.Fill,
@@ -50,9 +49,9 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
     ({present}) => present === index,
   );
 
-  const ref = React.useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isSelected) {
       ref.current?.scrollIntoView();
     }
