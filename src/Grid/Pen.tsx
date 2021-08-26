@@ -55,7 +55,7 @@ const useValueEffect = (id: string, value: string) => {
   // TODO: find a way to prevent this
   React.useEffect(() => {
     setValue(value);
-    return () => setValue('');
+    return () => setValue(''); // reset validations
   }, [value, setValue]);
 };
 
