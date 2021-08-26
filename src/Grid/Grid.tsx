@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {MouseEventHandler} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -16,7 +16,7 @@ const Container = styled.div({
 
 export const Grid = () => {
   const mouseEvents = (): {
-    [key: string]: React.MouseEventHandler;
+    [key: string]: MouseEventHandler;
   } => {
     return {
       onMouseDown: () => {

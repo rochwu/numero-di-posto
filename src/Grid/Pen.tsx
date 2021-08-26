@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useCallback, useEffect} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -43,7 +43,7 @@ const useValueEffect = (id: string, value: string) => {
   const setColumn = useSetRecoilState(columnSelector(id));
   const setBlock = useSetRecoilState(blockSelector(id));
 
-  const setValue = React.useCallback(
+  const setValue = useCallback(
     (value: string) => {
       setRow(value);
       setColumn(value);
@@ -53,7 +53,7 @@ const useValueEffect = (id: string, value: string) => {
   );
 
   // TODO: find a way to prevent this
-  React.useEffect(() => {
+  useEffect(() => {
     setValue(value);
     return () => setValue(''); // reset validations
   }, [value, setValue]);

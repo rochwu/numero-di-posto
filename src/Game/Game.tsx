@@ -1,4 +1,3 @@
-import * as React from 'react';
 import {useRecoilValue} from 'recoil';
 import styled from '@emotion/styled';
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import {useEffect} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -54,7 +54,7 @@ export const Pencil = ({identifier: id}: Props) => {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (doAutoFill && uniqueValues?.size === 8) {
       dispatch(actions.autofill({id, value: remainingValue}));
     }
