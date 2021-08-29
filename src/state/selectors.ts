@@ -23,3 +23,11 @@ export const selectIsFirstSelected = (id: Identifier) => ({selected}: State) =>
 export const selectIsFilled = ({filled}: State) => filled === 81;
 
 export const selectHasValues = ({filled}: State) => filled > 0;
+
+// Returns the ref to differentiate between cycling through new games
+export const selectStarted = ({history}: State) => {
+  if (history.length === 1) {
+    return history[0];
+  }
+  return;
+};

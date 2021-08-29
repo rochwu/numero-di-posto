@@ -2,7 +2,7 @@ import React, {useCallback, useEffect, useReducer, useRef} from 'react';
 
 import styled from '@emotion/styled';
 import {useSelector} from 'react-redux';
-import {selectIsFilled} from '../state';
+import {selectIsFilled, selectStarted} from '../state';
 
 const Container = styled.div({
   display: 'flex',
@@ -71,6 +71,7 @@ const reducer = (state: number, {type}: {type: string}) => {
 
 export const Timer = () => {
   const completed = useSelector(selectIsFilled);
+  const started = useSelector(selectStarted);
 
   const [ellapsed, changeEllapsed] = useReducer(reducer, 0);
   const intervalId = useRef(0);
@@ -102,6 +103,12 @@ export const Timer = () => {
     pace();
     return () => clearInterval(intervalId.current);
   }, [pace]);
+
+  useEffect(() => {
+    if (started) {
+      reset();
+    }
+  }, [started]);
 
   const time = ellapsed + saved.current;
 
