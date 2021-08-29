@@ -23,6 +23,18 @@ const Selected = styled.div({
   transform: `scale(1.1)`,
 });
 
+const HighlightContainer = styled.span({
+  display: 'inline-flex',
+  alignItems: 'center',
+});
+
+const Color = styled.span({
+  height: `0.9em`,
+  width: `0.9em`,
+  border: '1px solid black',
+  borderRadius: `3px`,
+});
+
 const createAction = (fill: Fill) => {
   switch (fill) {
     case Fill.Pencil:
@@ -81,6 +93,16 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
         <span>
           <Subject>removed</Subject> {affects}
         </span>
+      );
+    } else if (fill === Fill.Color) {
+      const style = {backgroundColor: key};
+
+      content = (
+        <HighlightContainer>
+          colored&nbsp;
+          <Color style={style} />
+          &nbsp;{affects}
+        </HighlightContainer>
       );
     } else {
       const action = createAction(fill);

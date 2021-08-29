@@ -1,3 +1,5 @@
+import {MouseEventHandler} from 'react';
+
 import styled from '@emotion/styled';
 import {useDispatch, useSelector} from 'react-redux';
 import {
@@ -7,24 +9,22 @@ import {
   selectIsSelected,
   selectValue,
 } from '../state';
-import {flags, getId, Colors, Indices, Size} from '../globals';
+import {flags, getId, Indices, Size} from '../globals';
 import {useSetRecoilState} from 'recoil';
 import {Pencil} from './Pencil';
 import {Pen} from './Pen';
+import {CellOverlay} from './CellOverlay';
 
 const Container = styled.div(
   {
     display: 'grid',
-    justifyContent: 'center',
-    alignItems: 'center',
     height: Size.Pen,
     width: Size.Pen,
+    backgroundColor: 'white',
   },
-  ({row, column, isSelected, isFirstSelected}: any) => ({
+  ({row, column}: any) => ({
     gridRow: (row % 3) + 1,
     gridColumn: (column % 3) + 1,
-    backgroundColor: isSelected ? Colors.Selected : 'white',
-    boxShadow: isFirstSelected ? `inset 0 0 4px black` : undefined,
   }),
 );
 
@@ -40,7 +40,7 @@ export const Cell = ({row, column}: Indices) => {
   const isSelected = useSelector(selectIsSelected(id));
   const isFirstSelected = useSelector(selectIsFirstSelected(id));
 
-  const handleMouseEnter: React.MouseEventHandler = ({metaKey}) => {
+  const handleMouseEnter: MouseEventHandler = ({metaKey}) => {
     if (flags.isSelecting) {
       if (metaKey) {
         dispatch(actions.select({id, isSelected: flags.selectingFill}));
@@ -50,7 +50,7 @@ export const Cell = ({row, column}: Indices) => {
     }
   };
 
-  const handleMouseDown: React.MouseEventHandler = ({metaKey}) => {
+  const handleMouseDown: MouseEventHandler = ({metaKey}) => {
     flags.selectingFill = !isSelected;
 
     if (value && !flags.isSelecting && !metaKey) {
@@ -79,14 +79,19 @@ export const Cell = ({row, column}: Indices) => {
       column={column}
       onMouseEnter={handleMouseEnter}
       onMouseDown={handleMouseDown}
-      isFirstSelected={isFirstSelected}
-      isSelected={isSelected}
     >
-      {value ? (
-        <Pen identifier={id} value={value} />
-      ) : (
-        <Pencil identifier={id} />
-      )}
+      <CellOverlay
+        identifier={id}
+        isSelected={isSelected}
+        isFirstSelected={isFirstSelected}
+        value={value}
+      >
+        {value ? (
+          <Pen identifier={id} value={value} />
+        ) : (
+          <Pencil identifier={id} />
+        )}
+      </CellOverlay>
     </Container>
   );
 };

@@ -32,6 +32,7 @@ export enum Fill {
   Pencil,
   Delete,
   Auto,
+  Color,
 }
 
 export type Indices = {

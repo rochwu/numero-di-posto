@@ -4,18 +4,26 @@ export type State = {
   history: History;
   present: number; // index of history
   disabled: Disabled;
-  pencils: Pencils;
-  values: Values;
   selected: Identifier[];
   filled: number; // Used to tell when to validate
+} & Inputs;
+
+export type Inputs = {
+  pencils: Pencils;
+  values: Values;
+  highlights: Highlights;
 };
 
 export type Values = {
-  [identifier in Identifier]: string;
+  [identifier in Identifier]: string; // 1-9
 };
 
 export type Pencils = {
   [identifier in Identifier]: Pencil;
+};
+
+export type Highlights = {
+  [identifier in Identifier]: string; // hex
 };
 
 export type Record = {
@@ -24,11 +32,9 @@ export type Record = {
   fill: Fill;
 };
 
-export type History = {
+export type History = ({
   record: Record;
-  values: Values;
-  pencils: Pencils;
-}[];
+} & Inputs)[];
 
 // row + column,  2 digit string
 export type Identifier = string;

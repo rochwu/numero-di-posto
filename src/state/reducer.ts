@@ -10,10 +10,12 @@ const initialRecord = {fill: Fill.Normal, key: '', selected: []};
 const initialState: State = {
   values: {},
   pencils: {},
+  highlights: {},
   history: [
     {
       values: {},
       pencils: {},
+      highlights: {},
       record: initialRecord,
     },
   ],
@@ -24,7 +26,9 @@ const initialState: State = {
 };
 
 const getChanges = ({selected, state, key, fill}: Record & {state: State}) => {
-  return selected.reduce<Pick<State, 'pencils' | 'values' | 'filled'>>(
+  return selected.reduce<
+    Pick<State, 'pencils' | 'values' | 'highlights' | 'filled'>
+  >(
     (changes, id) => {
       switch (fill) {
         case Fill.Normal: {
@@ -38,7 +42,9 @@ const getChanges = ({selected, state, key, fill}: Record & {state: State}) => {
         case Fill.Delete: {
           if (state.values[id]) {
             changes.filled--;
-            changes.values[id] = key;
+            changes.values[id] = '';
+          } else if (state.highlights[id]) {
+            changes.highlights[id] = '';
           } else {
             changes.pencils[id] = {};
           }
@@ -57,11 +63,15 @@ const getChanges = ({selected, state, key, fill}: Record & {state: State}) => {
           }
           break;
         }
+        case Fill.Color: {
+          changes.highlights[id] = key;
+          break;
+        }
       }
 
       return changes;
     },
-    {pencils: {}, values: {}, filled: 0},
+    {pencils: {}, values: {}, highlights: {}, filled: 0},
   );
 };
 
@@ -103,6 +113,7 @@ const resetHistory = (values: Values): Pick<State, 'history' | 'present'> => {
       {
         values,
         pencils: {},
+        highlights: {},
         record: initialRecord, // TODO: ponder whether I should spread or ref
       },
     ],
@@ -146,7 +157,7 @@ export const {reducer, actions} = createSlice({
       state,
       {payload: {id, value}}: PayloadAction<{id: Identifier; value: string}>,
     ) => {
-      const {pencils} = state;
+      const {pencils, highlights} = state;
       const record = {fill: Fill.Auto, key: value, selected: [id]};
 
       const values = {
@@ -161,10 +172,9 @@ export const {reducer, actions} = createSlice({
         ...state,
         history: [
           ...state.history.slice(0, present),
-          {pencils, values, record},
+          {pencils, highlights, values, record},
         ],
         present,
-        pencils,
         values,
         filled,
       };
@@ -176,8 +186,10 @@ export const {reducer, actions} = createSlice({
       const selected = payload.selected.filter(id => {
         const value = selectValue(id)(state);
         const isDisabled = selectIsDisabled(id)(state);
+        const cannotNote =
+          value && (fill === Fill.Pencil || fill === Fill.Color);
 
-        return !(isDisabled || (fill === Fill.Pencil && value));
+        return !(isDisabled || cannotNote);
       });
 
       if (!selected.length) {
@@ -196,16 +208,21 @@ export const {reducer, actions} = createSlice({
         ...state.values,
         ...changes.values,
       };
+      const highlights = {
+        ...state.highlights,
+        ...changes.highlights,
+      };
 
       return {
         ...state,
         history: [
           ...state.history.slice(0, present),
-          {pencils, values, record},
+          {pencils, values, highlights, record},
         ],
         present,
         pencils,
         values,
+        highlights,
         filled: state.filled + changes.filled,
       };
     },

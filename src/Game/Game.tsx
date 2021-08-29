@@ -7,6 +7,7 @@ import {columRowAidState} from '../Settings/recoil';
 import {RowsAid} from './RowsAid';
 import {ColumnsAid} from './ColumnsAid';
 import {Timer} from './Timer';
+import {Highlighter} from './Highlighter';
 
 const Container = styled.div({
   display: 'grid',
@@ -17,7 +18,7 @@ const Container = styled.div({
 const ColumnsContainer = styled.div({
   display: 'grid',
   gridRow: 1,
-  gridColumn: 2,
+  gridColumn: '2 / 4',
 });
 
 const RowsContainer = styled.div({
@@ -29,10 +30,16 @@ const RowsContainer = styled.div({
 const GridContainer = styled.div({
   display: 'grid',
   gridRow: 2,
-  gridColumn: 2,
+  gridColumn: '2 / 4',
 });
 
 const TimerContainer = styled.div({
+  display: 'grid',
+  gridRow: 3,
+  gridColumn: 3,
+});
+
+const HighlighterContainer = styled.div({
   display: 'grid',
   gridRow: 3,
   gridColumn: 2,
@@ -66,6 +73,9 @@ export const Game = () => {
       <TimerContainer>
         <Timer />
       </TimerContainer>
+      <HighlighterContainer>
+        <Highlighter />
+      </HighlighterContainer>
       <Aid />
     </Container>
   );

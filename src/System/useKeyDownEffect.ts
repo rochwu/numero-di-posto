@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilState} from 'recoil';
 
 import {Fill, transformId} from '../globals';
-import {actions, lastSelectedState, State} from '../state';
+import {actions, lastSelectedState, selectSelected, State} from '../state';
 
 const getIdFromArrowKey = ({key, id}: {key: string; id: string}) => {
   let row = 0;
@@ -30,9 +30,7 @@ const getIdFromArrowKey = ({key, id}: {key: string; id: string}) => {
 export const useKeyDownEffect = () => {
   const dispatch = useDispatch();
 
-  const selected = useSelector<State, State['selected']>(
-    ({selected}) => selected,
-  );
+  const selected = useSelector(selectSelected);
 
   const [lastSelected, setLastSelected] = useRecoilState(lastSelectedState);
 

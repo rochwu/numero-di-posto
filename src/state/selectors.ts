@@ -1,5 +1,7 @@
 import {Identifier, State} from './types';
 
+export const selectSelected = ({selected}: State) => selected;
+
 export const selectIsDisabled = (id: Identifier) => ({disabled}: State) =>
   !!disabled[id];
 
@@ -8,6 +10,9 @@ export const selectPencil = (id: Identifier) => (state: State) =>
 
 export const selectValue = (id: Identifier) => (state: State) =>
   state.values[id];
+
+export const selectHighlight = (id: Identifier) => (state: State) =>
+  state.highlights[id];
 
 export const selectIsSelected = (id: Identifier) => ({selected}: State) =>
   selected.indexOf(id) >= 0;

@@ -3,7 +3,7 @@ import {atom} from 'recoil';
 // Show possible values for each column + row
 export const columRowAidState = atom({
   key: 'isAidOnState',
-  default: true,
+  default: false,
 });
 
 export const autoPencilState = atom({

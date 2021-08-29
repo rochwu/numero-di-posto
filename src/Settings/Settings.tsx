@@ -118,14 +118,14 @@ export const Settings = () => {
           />
           <RecoilControl
             state={showMakerState}
-            label="Expunge Present and Revise"
+            label="Allow Lower Difficulty Ashamedly"
           />
           <GivensControl label="Absolutely Protect Givens" />
         </Group>
         <Group heading="Bond">
           <RecoilControl
             state={canOverscrollState}
-            label="Censor Finger Gestures"
+            label="Censor Twin Finger Gestures"
           />
         </Group>
       </Container>
