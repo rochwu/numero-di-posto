@@ -82,13 +82,14 @@ const reduceHistory = ({
   present: State['present'];
   state: State;
 }) => {
-  const {values, pencils} = state.history[present];
+  const {values, pencils, highlights} = state.history[present];
 
   return {
     ...state,
     present,
     pencils,
     values,
+    highlights,
     filled: Object.keys(values).filter(key => values[key]).length,
   };
 };

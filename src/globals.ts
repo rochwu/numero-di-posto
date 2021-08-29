@@ -20,6 +20,17 @@ export const Colors = {
   Selected: `#fff59d`,
   Disabled: 'black',
   Pencil: `#757575`,
+  Highlight: [
+    '#8adbd3',
+    '#edafb0',
+    '#dfecba',
+    '#b4beec',
+    '#dfb5e0',
+    '#a4d3a8',
+    '#81c9ea',
+    '#bac68d',
+    '#ddc094',
+  ],
 };
 
 export const FontFamily = {

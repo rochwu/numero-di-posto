@@ -29,6 +29,9 @@ const HighlightContainer = styled.span({
 });
 
 const Color = styled.span({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
   height: `0.9em`,
   width: `0.9em`,
   border: '1px solid black',
@@ -54,6 +57,15 @@ type Props = {
 const getElementId = (index: number) => {
   return `record${index}`;
 };
+
+const colorToValue = (() => {
+  const dictionary: {[color: string]: number} = {};
+  Colors.Highlight.forEach((color, index) => {
+    dictionary[color] = index + 1;
+  });
+
+  return (color: string) => dictionary[color];
+})();
 
 export const Record = ({record: {selected, fill, key}, index}: Props) => {
   const dispatch = useDispatch();
@@ -100,7 +112,7 @@ export const Record = ({record: {selected, fill, key}, index}: Props) => {
       content = (
         <HighlightContainer>
           colored&nbsp;
-          <Color style={style} />
+          <Color style={style}>{colorToValue(key)}</Color>
           &nbsp;{affects}
         </HighlightContainer>
       );

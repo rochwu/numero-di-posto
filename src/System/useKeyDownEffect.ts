@@ -2,8 +2,8 @@ import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilState} from 'recoil';
 
-import {Fill, transformId} from '../globals';
-import {actions, lastSelectedState, selectSelected, State} from '../state';
+import {Fill, transformId, Colors} from '../globals';
+import {actions, lastSelectedState, selectSelected} from '../state';
 
 const getIdFromArrowKey = ({key, id}: {key: string; id: string}) => {
   let row = 0;
@@ -35,15 +35,29 @@ export const useKeyDownEffect = () => {
   const [lastSelected, setLastSelected] = useRecoilState(lastSelectedState);
 
   const handleKeyDown = (event: KeyboardEvent) => {
-    const {key, metaKey, shiftKey} = event;
+    const {key, metaKey, shiftKey, altKey, code} = event;
 
     const fill = metaKey ? Fill.Pencil : Fill.Normal;
 
-    if (key.match(/[1-9]/)) {
+    // Using code to account for altKey. Hope no one is a psycho and maps their numbers elsewhere
+    if (code.match(/Digit[1-9]/)) {
+      const digit = code[5];
+
       if (metaKey) {
         event.preventDefault(); // Prevents browser tab switch
       }
-      dispatch(actions.fill({key, fill, selected}));
+
+      if (altKey) {
+        dispatch(
+          actions.fill({
+            key: Colors.Highlight[parseInt(digit, 10) - 1],
+            fill: Fill.Color,
+            selected,
+          }),
+        );
+      } else {
+        dispatch(actions.fill({key: digit, fill, selected}));
+      }
     }
 
     switch (key) {
