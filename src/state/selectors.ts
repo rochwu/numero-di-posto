@@ -2,17 +2,28 @@ import {Identifier, State} from './types';
 
 export const selectSelected = ({selected}: State) => selected;
 
-export const selectIsDisabled = (id: Identifier) => ({disabled}: State) =>
-  !!disabled[id];
+export const selectDisabled = ({disabled}: State) => disabled;
+
+export const selectIsDisabled = (id: Identifier) => (state: State) =>
+  !!selectDisabled(state)[id];
+
+export const selectPencils = ({history, present}: State) =>
+  history[present].pencils;
+
+export const selectValues = ({history, present}: State) =>
+  history[present].values;
+
+export const selectHighlights = ({history, present}: State) =>
+  history[present].highlights;
 
 export const selectPencil = (id: Identifier) => (state: State) =>
-  state.pencils[id];
+  selectPencils(state)[id];
 
 export const selectValue = (id: Identifier) => (state: State) =>
-  state.values[id];
+  selectValues(state)[id];
 
 export const selectHighlight = (id: Identifier) => (state: State) =>
-  state.highlights[id];
+  selectHighlights(state)[id];
 
 export const selectIsSelected = (id: Identifier) => ({selected}: State) =>
   selected.indexOf(id) >= 0;

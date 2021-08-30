@@ -6,7 +6,7 @@ export type State = {
   disabled: Disabled;
   selected: Identifier[];
   filled: number; // Used to tell when to validate
-} & Inputs;
+};
 
 export type Inputs = {
   pencils: Pencils;
@@ -36,7 +36,7 @@ export type History = ({
   record: Record;
 } & Inputs)[];
 
-// row + column,  2 digit string
+// row + column, 2 digit string, [0-2][0-2]
 export type Identifier = string;
 
 export type Pencil = {
@@ -47,3 +47,6 @@ export type Pencil = {
 export type Disabled = {
   [identifier in Identifier]: boolean | undefined;
 };
+
+export type FillArgs = Pick<Record, 'key' | 'fill'> &
+  Partial<Pick<Record, 'selected'>>;

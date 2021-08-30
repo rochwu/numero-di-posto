@@ -84,3 +84,16 @@ export const getRandomNumber = (max: number, min: number = 0) => {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1) + min);
 };
+
+export const getBlockIndex = (row: number, column: number) => {
+  return Math.floor(row / 3) * 3 + Math.floor(column / 3);
+};
+
+export const getBlockId = ({row, column}: Indices) => {
+  return `${row - (row % 3)}${column - (column % 3)}`;
+};
+
+// Get cell position on block
+export const getBlockPosition = ({row, column}: Indices) => {
+  return (row % 3) * 3 + (column % 3);
+};

@@ -1,16 +1,20 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Fill, getId} from '../globals';
+import {
+  Fill,
+  getBlockIndex,
+  getBlockPosition,
+  getId,
+  getIndices,
+} from '../globals';
 
-import {State, Record, Identifier, Values} from './types';
-import {selectIsDisabled, selectValue} from './selectors';
-import {showPossibilities} from './showPossibilities';
+import {State, Identifier, Values, Inputs, FillArgs} from './types';
+import {selectValues} from './selectors';
+import {showPossibleSelection} from './showPossibleSelection';
+import {fill} from './fill';
 
 const initialRecord = {fill: Fill.Normal, key: '', selected: []};
 
 const initialState: State = {
-  values: {},
-  pencils: {},
-  highlights: {},
   history: [
     {
       values: {},
@@ -25,71 +29,18 @@ const initialState: State = {
   filled: 0,
 };
 
-const getChanges = ({selected, state, key, fill}: Record & {state: State}) => {
-  return selected.reduce<
-    Pick<State, 'pencils' | 'values' | 'highlights' | 'filled'>
-  >(
-    (changes, id) => {
-      switch (fill) {
-        case Fill.Normal: {
-          if (!state.values[id]) {
-            changes.filled++;
-          }
-
-          changes.values[id] = key;
-          break;
-        }
-        case Fill.Delete: {
-          if (state.values[id]) {
-            changes.filled--;
-            changes.values[id] = '';
-          } else if (state.highlights[id]) {
-            changes.highlights[id] = '';
-          } else {
-            changes.pencils[id] = {};
-          }
-          break;
-        }
-        case Fill.Pencil: {
-          const {[key]: mark, ...marks} = state.pencils[id] || {};
-
-          if (mark) {
-            changes.pencils[id] = marks;
-          } else {
-            changes.pencils[id] = {
-              ...marks,
-              [key]: true,
-            };
-          }
-          break;
-        }
-        case Fill.Color: {
-          changes.highlights[id] = key;
-          break;
-        }
-      }
-
-      return changes;
-    },
-    {pencils: {}, values: {}, highlights: {}, filled: 0},
-  );
-};
-
 const reduceHistory = ({
   present,
   state,
 }: {
   present: State['present'];
   state: State;
-}) => {
-  const {values, pencils, highlights} = state.history[present];
+}): State => {
+  const {values} = state.history[present];
 
   return {
     ...state,
     present,
-    pencils,
-    values,
-    highlights,
     filled: Object.keys(values).filter(key => values[key]).length,
   };
 };
@@ -130,7 +81,7 @@ export const {reducer, actions} = createSlice({
   reducers: {
     make: (_, {payload: board}: PayloadAction<string>) => {
       const disabled: State['disabled'] = {};
-      const values: State['values'] = {};
+      const values: Inputs['values'] = {};
       let filled = 0;
 
       for (let i = 0; i < 81; i++) {
@@ -150,92 +101,48 @@ export const {reducer, actions} = createSlice({
         ...initialState,
         ...resetHistory(values),
         filled,
-        values,
         disabled,
       };
     },
-    autofill: (
-      state,
-      {payload: {id, value}}: PayloadAction<{id: Identifier; value: string}>,
-    ) => {
-      const {pencils, highlights} = state;
-      const record = {fill: Fill.Auto, key: value, selected: [id]};
+    fill: (state, {payload}: PayloadAction<FillArgs>) =>
+      fill({state, ...payload}),
+    smartFill: (state, {payload: key}: PayloadAction<string>) => {
+      const selectedPerBlock = new Array(9).fill({id: '', count: 0});
 
-      const values = {
-        ...state.values,
-        [id]: value,
-      };
+      state.selected.forEach(id => {
+        const {row, column} = getIndices(id);
 
-      const present = state.present + 1;
-      const filled = state.filled + 1;
+        const index = getBlockIndex(row, column);
 
-      return {
-        ...state,
-        history: [
-          ...state.history.slice(0, present),
-          {pencils, highlights, values, record},
-        ],
-        present,
-        values,
-        filled,
-      };
-    },
-    fill: (state, {payload}: PayloadAction<Record>) => {
-      const {key, fill} = payload;
-
-      // Separated to improve maintanability
-      const selected = payload.selected.filter(id => {
-        const value = selectValue(id)(state);
-        const isDisabled = selectIsDisabled(id)(state);
-        const cannotNote =
-          value && (fill === Fill.Pencil || fill === Fill.Color);
-
-        return !(isDisabled || cannotNote);
+        selectedPerBlock[index] = {
+          id,
+          count: selectedPerBlock[index].count + 1,
+        };
       });
 
-      if (!selected.length) {
-        return state;
-      }
+      const selected = selectedPerBlock.reduce<Identifier[]>(
+        (selected, {id, count}) => {
+          if (count === 1) {
+            selected.push(id);
+          }
 
-      const changes = getChanges({selected, state, key, fill});
+          return selected;
+        },
+        [],
+      );
 
-      const present = state.present + 1;
-      const record = {fill, key, selected};
-      const pencils = {
-        ...state.pencils,
-        ...changes.pencils,
-      };
-      const values = {
-        ...state.values,
-        ...changes.values,
-      };
-      const highlights = {
-        ...state.highlights,
-        ...changes.highlights,
-      };
-
-      return {
-        ...state,
-        history: [
-          ...state.history.slice(0, present),
-          {pencils, values, highlights, record},
-        ],
-        present,
-        pencils,
-        values,
-        highlights,
-        filled: state.filled + changes.filled,
-      };
+      return fill({state, key, fill: Fill.Normal, selected});
     },
     toggleDisabled: state => {
       if (!Object.keys(state.disabled).length) {
         const disabled: State['disabled'] = {};
+        const values = selectValues(state);
 
         for (let x = 0; x < 9; x++) {
           for (let y = 0; y < 9; y++) {
             const id = getId(x, y);
 
-            if (state.values[id]) {
+            if (values[id]) {
               disabled[id] = true;
             }
           }
@@ -275,27 +182,32 @@ export const {reducer, actions} = createSlice({
     timeTravel: (state, {payload: present}) => {
       return reduceHistory({present, state});
     },
-    showPossibilities: (
+    showPossibleSelection: (
       state,
       {payload}: PayloadAction<{id: string; value: string} | undefined>,
     ) => {
       if (payload) {
         const {id, value} = payload;
-        state.selected = [id].concat(showPossibilities(state, value));
+        state.selected = showPossibleSelection(state, value, id);
       } else {
-        state.selected = state.selected.concat(
-          showPossibilities(state, state.values[state.selected[0]]),
+        const id = state.selected[0];
+
+        state.selected = showPossibleSelection(
+          state,
+          selectValues(state)[id],
+          id,
         );
       }
     },
     selectAll: state => {
       const selected = [];
+      const values = selectValues(state);
 
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           const id = getId(i, j);
 
-          if (!state.values[id] || state.filled === 81) {
+          if (!values[id] || state.filled === 81) {
             selected.push(id);
           }
         }
