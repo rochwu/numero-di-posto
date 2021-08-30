@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {MouseEventHandler, useEffect} from 'react';
 
 import styled from '@emotion/styled';
 
@@ -8,7 +8,7 @@ import {
   Pencil as PencilState,
   selectPencil,
 } from '../state';
-import {Colors, Indices, Size} from '../globals';
+import {Colors, Fill, Indices, Size} from '../globals';
 import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilValue} from 'recoil';
 import {tryUniqueCellSelector} from '../validation';
@@ -56,10 +56,18 @@ export const Pencil = ({identifier: id}: Props) => {
 
   useEffect(() => {
     if (doAutoFill && uniqueValues?.size === 8) {
-      dispatch(actions.autofill({id, value: remainingValue}));
+      dispatch(
+        actions.fill({selected: [id], fill: Fill.Auto, key: remainingValue}),
+      );
     }
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [doAutoFill, uniqueValues]);
+
+  const handleDoubleClick = (value: string): MouseEventHandler => () => {
+    if (value) {
+      dispatch(actions.showPossibleSelection({id, value}));
+    }
+  };
 
   const pencil = uniqueValues ? autoPencil : manualPencil;
 
@@ -69,10 +77,15 @@ export const Pencil = ({identifier: id}: Props) => {
     for (let j = 0; j < 3; j++) {
       const number = i * 3 + j + 1; // number on the mark
 
-      const mark = pencil?.[number] ? number : '';
+      const mark = pencil?.[number] ? `${number}` : '';
 
       cells.push(
-        <Grid key={number} row={i} column={j}>
+        <Grid
+          key={number}
+          row={i}
+          column={j}
+          onDoubleClick={handleDoubleClick(mark)}
+        >
           {mark}
         </Grid>,
       );

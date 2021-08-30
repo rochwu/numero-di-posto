@@ -16,6 +16,11 @@ export const autoSelectPossibleState = atom({
   default: true,
 });
 
+export const smartFill = atom({
+  key: 'smartFill',
+  default: true,
+});
+
 // Convenience + Game Config
 export const showHistoryState = atom({
   key: 'showHistoryState',

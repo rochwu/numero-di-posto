@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect} from 'react';
+import {useCallback, useEffect} from 'react';
 import {useDispatch} from 'react-redux';
 import {useRecoilValue, useResetRecoilState} from 'recoil';
 import {canOverscrollState} from '../Settings/recoil';

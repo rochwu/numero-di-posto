@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {Fill, Colors} from '../globals';
-import {actions, selectSelected} from '../state';
+import {actions} from '../state';
 
 const Container = styled.div({
   display: 'flex',
@@ -14,7 +14,7 @@ const Button = styled.span({
   display: 'inline-flex',
   alignItems: 'center',
   justifyContent: 'center',
-  marginRight: '12px',
+  marginRight: '9px',
   width: '2em',
   height: '2em',
   border: '1px black solid',
@@ -24,12 +24,10 @@ const Button = styled.span({
 
 const Color = ({color, value}: {color: string; value: number}) => {
   const dispatch = useDispatch();
-  const selected = useSelector(selectSelected);
-
   const style = {backgroundColor: color};
 
   const handleClick = () => {
-    dispatch(actions.fill({key: color, selected, fill: Fill.Color}));
+    dispatch(actions.fill({key: color, fill: Fill.Color}));
   };
 
   return (

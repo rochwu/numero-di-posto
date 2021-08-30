@@ -3,7 +3,7 @@ import React, {CSSProperties, ReactNode} from 'react';
 import {Transition} from 'react-transition-group';
 import {TransitionStatus} from 'react-transition-group/Transition';
 
-const DURATION = 500;
+const DURATION = 300;
 
 type Props = {
   isCollapsed?: boolean;

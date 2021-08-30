@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {useRecoilValue, useSetRecoilState} from 'recoil';
 
 import {showMakerState} from '../Settings';
-import {actions, State} from '../state';
+import {actions, selectValues, State} from '../state';
 import {
   CollapsibleWidth,
   Divider,
@@ -59,11 +59,22 @@ const StringInput = () => {
   );
 };
 
-const PresetButton = ({name, tuples}: {name: string; tuples: string[]}) => {
+const PresetButton = ({
+  name,
+  tuples,
+  grid,
+}: {
+  name: string;
+  tuples?: string[];
+  grid?: string;
+}) => {
   const dispatch = useDispatch();
+  const show = useSetRecoilState(showMakerState);
 
   const handleClick = () => {
-    dispatch(actions.make(tuplesToGrid(...tuples)));
+    const game = tuples ? tuplesToGrid(...tuples) : transform(grid!);
+    dispatch(actions.make(game));
+    show(false);
   };
 
   return (
@@ -76,9 +87,13 @@ const PresetButton = ({name, tuples}: {name: string; tuples: string[]}) => {
 const Presets = () => {
   return (
     <>
-      <SubsectionHeading>Plagiarize</SubsectionHeading>
+      <SubsectionHeading>Predestined</SubsectionHeading>
       <PresetButton name="OG Miracle" tuples={['531', '672']} />
       <PresetButton name="WTF Miracle" tuples={['551', '982']} />
+      <PresetButton
+        name="Sample"
+        grid="000000010400000000020000000000050407008000300001090000300400200050100000000806000"
+      />
     </>
   );
 };
@@ -89,7 +104,8 @@ const Transform = () => {
   const state = useSelector((state: State) => state);
 
   const handleClick = () => {
-    const {disabled, values} = state;
+    const {disabled} = state;
+    const values = selectValues(state);
 
     let grid = '';
 
@@ -110,9 +126,9 @@ const Transform = () => {
 
   return (
     <>
-      <SubsectionHeading>Facade</SubsectionHeading>
+      <SubsectionHeading>Metamorph</SubsectionHeading>
       <PrimaryButton onClick={handleClick} style={{margin: '1px 0'}}>
-        Wonk
+        Do it!
       </PrimaryButton>
     </>
   );

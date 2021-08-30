@@ -13,6 +13,7 @@ import {
   showMakerState,
   autoPencilState,
   autoSelectPossibleState,
+  smartFill,
 } from './recoil';
 
 import {useDispatch, useSelector} from 'react-redux';
@@ -109,6 +110,10 @@ export const Settings = () => {
           <RecoilControl
             state={autoSelectPossibleState}
             label="Optical Neural Networks"
+          />
+          <RecoilControl
+            state={smartFill}
+            label="Prevent Fill Without Aloneness "
           />
         </Group>
         <Group heading="Vex">

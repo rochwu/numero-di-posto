@@ -1,5 +1,5 @@
 import {atomFamily, selectorFamily} from 'recoil';
-import {getIndices, Indices} from '../globals';
+import {getIndices, getBlockId, getBlockPosition} from '../globals';
 import {autoPencilState} from '../Settings';
 
 type Values = {
@@ -104,14 +104,6 @@ export const isColumnValidSelector = selectorFamily<boolean, string>({
     return isColliding(value, state);
   },
 });
-
-const getBlockId = ({row, column}: Indices) => {
-  return `${row - (row % 3)}${column - (column % 3)}`;
-};
-
-const getBlockPosition = ({row, column}: Indices) => {
-  return (row % 3) * 3 + (column % 3);
-};
 
 export const blockState = atomFamily<Values, string>({
   key: 'blockState',

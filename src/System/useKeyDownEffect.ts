@@ -1,9 +1,10 @@
 import {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 
 import {Fill, transformId, Colors} from '../globals';
 import {actions, lastSelectedState, selectSelected} from '../state';
+import {smartFill} from '../Settings';
 
 const getIdFromArrowKey = ({key, id}: {key: string; id: string}) => {
   let row = 0;
@@ -33,6 +34,7 @@ export const useKeyDownEffect = () => {
   const selected = useSelector(selectSelected);
 
   const [lastSelected, setLastSelected] = useRecoilState(lastSelectedState);
+  const shouldSmartFill = useRecoilValue(smartFill);
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const {key, metaKey, shiftKey, altKey, code} = event;
@@ -55,6 +57,8 @@ export const useKeyDownEffect = () => {
             selected,
           }),
         );
+      } else if (shiftKey || (shouldSmartFill && fill === Fill.Normal)) {
+        dispatch(actions.smartFill(digit));
       } else {
         dispatch(actions.fill({key: digit, fill, selected}));
       }
@@ -69,7 +73,7 @@ export const useKeyDownEffect = () => {
       case 'Spacebar':
       case ' ': {
         if (selected.length === 1) {
-          dispatch(actions.showPossibilities());
+          dispatch(actions.showPossibleSelection());
         }
 
         return;

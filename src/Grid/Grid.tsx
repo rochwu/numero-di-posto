@@ -19,8 +19,12 @@ export const Grid = () => {
     [key: string]: MouseEventHandler;
   } => {
     return {
-      onMouseDown: () => {
-        flags.isSelecting = true;
+      onMouseDown: ({button}) => {
+        if (button === 0) {
+          flags.isSelecting = true;
+        } else if (button === 2) {
+          flags.isSelecting = false;
+        }
       },
       onMouseUp: () => {
         flags.isSelecting = false;

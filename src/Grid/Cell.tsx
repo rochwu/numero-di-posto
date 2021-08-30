@@ -50,12 +50,16 @@ export const Cell = ({row, column}: Indices) => {
     }
   };
 
-  const handleMouseDown: MouseEventHandler = ({metaKey}) => {
+  const handleMouseDown: MouseEventHandler = ({metaKey, button}) => {
+    if (button !== 0) {
+      return;
+    }
+
     flags.selectingFill = !isSelected;
 
     if (value && !flags.isSelecting && !metaKey) {
       setLastSelected(id);
-      dispatch(actions.showPossibilities({id, value}));
+      dispatch(actions.showPossibleSelection({id, value}));
       return;
     }
 
