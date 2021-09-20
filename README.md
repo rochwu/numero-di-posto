@@ -1,3 +1,3 @@
 # Numero di Posto
 
-Created with CodeSandbox
+Did you know? Numero di Posto is Number Place which is Sudoku in Japanese literal.
