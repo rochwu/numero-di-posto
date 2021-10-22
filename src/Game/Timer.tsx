@@ -108,7 +108,7 @@ export const Timer = () => {
     if (started) {
       reset();
     }
-  }, [started]);
+  }, [started, reset]);
 
   const time = ellapsed + saved.current;
 
@@ -118,7 +118,7 @@ export const Timer = () => {
     } else {
       completedTime.current = 0;
     }
-  }, [completed]);
+  }, [completed, time]);
 
   return (
     <Container>
