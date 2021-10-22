@@ -80,7 +80,9 @@ export const Timer = () => {
 
   const pace = useCallback(() => {
     start = Date.now();
-    intervalId.current = setInterval(
+    // Had to use window since it was getting confused with NodeJs's Timer
+    // But we can't use ReturnType since clearInterval expects number
+    intervalId.current = window.setInterval(
       () => changeEllapsed({type: types.add}),
       250,
     );
