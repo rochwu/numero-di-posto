@@ -7,7 +7,10 @@ import {actions} from '../state';
 const Container = styled.div({
   display: 'flex',
   padding: '3px',
+  flexDirection: 'column',
 });
+
+const Bar = styled.div({});
 
 // TODO: What is a11y?
 const Button = styled.span({
@@ -40,9 +43,12 @@ const Color = ({color, value}: {color: string; value: number}) => {
 export const Highlighter = () => {
   return (
     <Container>
-      {Colors.Highlight.map((color, index) => (
-        <Color color={color} value={index + 1} key={color} />
-      ))}
+      <Bar>
+        {Colors.Highlight.map((color, index) => (
+          <Color color={color} value={index + 1} key={color} />
+        ))}
+      </Bar>
+      ⌥ or alt
     </Container>
   );
 };

@@ -120,7 +120,8 @@ export const Timer = () => {
     } else {
       completedTime.current = 0;
     }
-  }, [completed, time]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [completed]);
 
   return (
     <Container>
