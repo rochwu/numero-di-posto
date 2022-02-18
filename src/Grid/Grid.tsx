@@ -14,24 +14,15 @@ const Container = styled.div({
   gap: '3px',
 });
 
-export const Grid = () => {
-  const mouseEvents = (): {
-    [key: string]: MouseEventHandler;
-  } => {
-    return {
-      onMouseDown: ({button}) => {
-        if (button === 0) {
-          flags.isSelecting = true;
-        } else if (button === 2) {
-          flags.isSelecting = false;
-        }
-      },
-      onMouseUp: () => {
-        flags.isSelecting = false;
-      },
-    };
-  };
+const handleMouseDown: MouseEventHandler = ({button}) => {
+  if (button === 0) {
+    flags.isSelecting = true;
+  } else if (button === 2) {
+    flags.isSelecting = false;
+  }
+};
 
+export const Grid = () => {
   let boxes = [];
 
   for (let row = 0; row < 3; row++) {
@@ -40,5 +31,5 @@ export const Grid = () => {
     }
   }
 
-  return <Container {...mouseEvents()}>{boxes}</Container>;
+  return <Container onMouseDown={handleMouseDown}>{boxes}</Container>;
 };

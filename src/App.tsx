@@ -1,11 +1,12 @@
 import styled from '@emotion/styled';
+import {MouseEventHandler} from 'react';
 
 import {System} from './System';
 import {Settings} from './Settings';
 import {History} from './History';
 import {Game} from './Game';
 import {Maker} from './Maker';
-import {FontFamily} from './globals';
+import {FontFamily, flags} from './globals';
 
 const Container = styled.div({
   display: 'flex',
@@ -13,11 +14,15 @@ const Container = styled.div({
   padding: '20px',
 });
 
+const handleMouseUp: MouseEventHandler = () => {
+  flags.isSelecting = false;
+};
+
 export default function App() {
   return (
     <>
       <System />
-      <Container>
+      <Container onMouseUp={handleMouseUp}>
         <Game />
         <History />
         <Maker />

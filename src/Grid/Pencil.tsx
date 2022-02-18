@@ -60,7 +60,7 @@ export const Pencil = ({identifier: id}: Props) => {
         actions.fill({selected: [id], fill: Fill.Auto, key: remainingValue}),
       );
     }
-    /* eslint-disable react-hooks/exhaustive-deps */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [doAutoFill, uniqueValues]);
 
   const handleDoubleClick = (value: string): MouseEventHandler => () => {

@@ -1,11 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {
-  Fill,
-  getBlockIndex,
-  getBlockPosition,
-  getId,
-  getIndices,
-} from '../globals';
+import {Fill, getBlockIndex, getId, getIndices} from '../globals';
 
 import {State, Identifier, Values, Inputs, FillArgs} from './types';
 import {selectValues} from './selectors';
@@ -190,6 +184,7 @@ export const {reducer, actions} = createSlice({
         const {id, value} = payload;
         state.selected = showPossibleSelection(state, value, id);
       } else {
+        // On keyboard selection there's no value in its context
         const id = state.selected[0];
 
         state.selected = showPossibleSelection(
