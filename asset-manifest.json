@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.js": "/numero-di-posto/static/js/main.0f95de04.chunk.js",
-    "main.js.map": "/numero-di-posto/static/js/main.0f95de04.chunk.js.map",
-    "runtime-main.js": "/numero-di-posto/static/js/runtime-main.931e33e9.js",
-    "runtime-main.js.map": "/numero-di-posto/static/js/runtime-main.931e33e9.js.map",
-    "static/js/2.9afc735c.chunk.js": "/numero-di-posto/static/js/2.9afc735c.chunk.js",
-    "static/js/2.9afc735c.chunk.js.map": "/numero-di-posto/static/js/2.9afc735c.chunk.js.map",
+    "main.js": "/numero-di-posto/static/js/main.e854744b.chunk.js",
+    "main.js.map": "/numero-di-posto/static/js/main.e854744b.chunk.js.map",
+    "runtime-main.js": "/numero-di-posto/static/js/runtime-main.9bb3f0d3.js",
+    "runtime-main.js.map": "/numero-di-posto/static/js/runtime-main.9bb3f0d3.js.map",
+    "static/js/2.8d00e552.chunk.js": "/numero-di-posto/static/js/2.8d00e552.chunk.js",
+    "static/js/2.8d00e552.chunk.js.map": "/numero-di-posto/static/js/2.8d00e552.chunk.js.map",
     "index.html": "/numero-di-posto/index.html",
-    "static/js/2.9afc735c.chunk.js.LICENSE.txt": "/numero-di-posto/static/js/2.9afc735c.chunk.js.LICENSE.txt"
+    "static/js/2.8d00e552.chunk.js.LICENSE.txt": "/numero-di-posto/static/js/2.8d00e552.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.931e33e9.js",
-    "static/js/2.9afc735c.chunk.js",
-    "static/js/main.0f95de04.chunk.js"
+    "static/js/runtime-main.9bb3f0d3.js",
+    "static/js/2.8d00e552.chunk.js",
+    "static/js/main.e854744b.chunk.js"
   ]
 }
