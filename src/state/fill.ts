@@ -18,10 +18,11 @@ export const fill = (args: {state: State} & FillArgs): State => {
 
   const selected = (args.selected || state.selected).filter(id => {
     const isDisabled = disabled[id];
+
     const isUnnotable =
       values[id] && (fill === Fill.Pencil || fill === Fill.Color);
 
-    return !(isDisabled && isUnnotable);
+    return !(isDisabled || isUnnotable);
   });
 
   if (!selected.length) {
