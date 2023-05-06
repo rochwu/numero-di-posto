@@ -6,37 +6,43 @@
   "main": "src/index.tsx",
   "homepage": "https://rochwu.github.io/numero-di-posto",
   "dependencies": {
-    "@emotion/react": "11.5.0",
-    "@emotion/styled": "11.3.0",
-    "@fluentui/react": "8.37.1",
-    "@reduxjs/toolkit": "1.6.2",
-    "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "react-redux": "7.2.5",
-    "react-scripts": "4.0.3",
-    "react-transition-group": "4.4.2",
-    "recoil": "0.4.1",
-    "redux": "4.1.1",
+    "@emotion/react": "11.10.8",
+    "@emotion/styled": "11.10.8",
+    "@fluentui/react": "8.109.2",
+    "@reduxjs/toolkit": "1.9.5",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-redux": "8.0.5",
+    "react-scripts": "5.0.1",
+    "react-transition-group": "4.4.5",
+    "recoil": "0.7.7",
+    "redux": "4.2.1",
     "redux-devtools-extension": "2.13.9"
   },
   "devDependencies": {
-    "typescript": "4.4.4",
-    "@types/react-dom": "17.0.10",
-    "@types/react": "17.0.19",
-    "@types/react-redux": "7.1.18",
-    "@types/react-transition-group": "4.4.2",
-    "gh-pages": "3.2.3"
+    "@types/react": "18.2.5",
+    "@types/react-dom": "18.2.4",
+    "@types/react-redux": "7.1.25",
+    "@types/react-transition-group": "4.4.6",
+    "gh-pages": "5.0.0",
+    "typescript": "5.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"],
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
   "eslintConfig": {
-    "extends": ["react-app"]
+    "extends": [
+      "react-app"
+    ]
   }
 }
