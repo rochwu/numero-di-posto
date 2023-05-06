@@ -1,4 +1,4 @@
-import {FC} from 'react';
+import {FC, ReactNode} from 'react';
 
 import styled from '@emotion/styled';
 import {useSelector} from 'react-redux';
@@ -24,6 +24,7 @@ export const CellOverlay: FC<{
   isFirstSelected: boolean;
   value: string;
   identifier: Identifier;
+  children: ReactNode;
 }> = ({isSelected, isFirstSelected, children, value, identifier: id}) => {
   const highlight = useSelector(selectHighlight(id));
 
