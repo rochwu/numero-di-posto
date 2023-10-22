@@ -30,7 +30,7 @@ export const Colors = {
     '#81c9ea',
     '#bac68d',
     '#ddc094',
-  ],
+  ].map(color => `${color}80`),
 };
 
 export const FontFamily = {
